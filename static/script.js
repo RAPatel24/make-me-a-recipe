@@ -21,7 +21,7 @@ function showRecipes(results) {
     for (key of recipes) {
         console.log(key);
         ele.insertAdjacentHTML('afterbegin', 
-                `<a href="#" onclick="gotoRecipe(${key.id})"><div id="recipe_div" style="border: 1px grey solid; padding: 25px;">
+                `<a href="recipe/${key.id}/${key.title}" onclick="gotoRecipe(${key.id})"><div id="recipe_div" style="border: 1px grey solid; padding: 25px;">
                     <h4>${key.title}</h4>
                     <img src='${key.image}'>
                     <p><strong>Missed Ingredients:</strong> <i>${key.missedIngredients}</i></p>

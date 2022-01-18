@@ -1,0 +1,150 @@
+[
+    {
+        "id": 1,
+      "name": "Roasted Asparagus",
+      "ingredients": [
+              {
+                  "quantity": "1 lb",
+                  "name": " asparagus",
+                  "type": "Produce"
+              },
+              {
+                  "quantity": "1 1/2 tbsp",
+                  "name": "olive oil",
+                  "type": "Condiments"
+              },
+              {
+                  "quantity": "1/2 tsp",
+                  "name": "kosher salt",
+                  "type": "Baking"
+              }
+          ],
+      "steps": [
+              "Preheat oven to 425°F.",
+              "Cut off the woody bottom part of the asparagus spears and discard.",
+              "With a vegetable peeler, peel off the skin on the bottom 2-3 inches of the spears (this keeps the asparagus from being all.\",string.\", and if you eat asparagus you know what I mean by that).",
+              "Place asparagus on foil-lined baking sheet and drizzle with olive oil.",
+              "Sprinkle with salt.",
+              "With your hands, roll the asparagus around until they are evenly coated with oil and salt.",
+              "Roast for 10-15 minutes, depending on the thickness of your stalks and how tender you like them.",
+              "They should be tender when pierced with the tip of a knife.",
+              "The tips of the spears will get very brown but watch them to prevent burning.",
+              "They are great plain, but sometimes I serve them with a light vinaigrette if we need something acidic to balance out our meal."
+          ],
+           "imageURL": "http://img.sndimg.com/food/image/upload/w_266/v1/img/recipes/50/84/7/picMcSyVd.jpg",
+          "category": "breakfast/brunch",
+          "cookingTime": "25 mins",
+          "serves": "4"
+    },
+    {
+        "id": 2,
+      "name": "Big Night Pizza",
+          "ingredients": [
+              {
+                  "quantity": "5 teaspoons",
+                  "name": "yeast",
+                  "type": "Baking"
+              },
+              {
+                  "quantity": "5 cups",
+                  "name": "flour",
+                  "type": "Baking"
+              },
+              {
+                  "quantity": "4 tablespoons",
+                  "name": "vegetable oil",
+                  "type": "Baking"
+              },
+              {
+                  "quantity": "2 tablespoons",
+                  "name": "sugar",
+                  "type": "Baking"
+              },
+              {
+                  "quantity": "2 teaspoons",
+                  "name": "salt",
+                  "type": "Baking"
+              },
+              {
+                  "quantity": "2 cups",
+                  "name": "hot water",
+                  "type": "Misc"
+              },
+              {
+                  "quantity": "1/4 cup",
+                  "name": "pizza sauce",
+                  "type": "Misc"
+              },
+              {
+                  "quantity": "3/4 cup",
+                  "name": "mozzarella cheese",
+                  "type": "Dairy"
+              }
+          ],
+          "steps": [
+              "Add hot water to yeast in a large bowl and let sit for 15 minutes.",
+              "Mix in oil, sugar, salt, and flour and let sit for 1 hour.",
+              "Knead the dough and spread onto a pan.",
+              "Spread pizza sauce and sprinkle cheese.",
+              "Add any optional toppings as you wish.",
+              "Bake at 400 deg Fahrenheit for 15 minutes.",
+              "Enjoy!"
+          ],
+          "imageURL": "http://upload.wikimedia.org/wikipedia/commons/c/c7/Spinach_pizza.jpg",
+          "category": "main course",
+          "cookingTime": "40 mins",
+          "serves": "4"
+      },
+      {
+          "id": 3,
+        "name": "Million Dollar Dip",
+        "ingredients": [
+              {
+                  "quantity": "1/2 cup",
+                  "name": " slivered almonds",
+                  "type": "Produce"
+              },
+              {
+                  "quantity": "6 slices",
+                  "name": "bacon",
+                  "type": "Produce"
+              },
+              {
+                  "quantity": "1 and 1/2 cups",
+                  "name": "mayonnaise",
+                  "type": "Misc"
+              },
+              
+              { "quantity": "8 ounce",
+                  "name": "Cheddar cheese, shredded",
+                  "type": "Misc"
+              },
+              {
+                  "quantity": "1 and 1/2 cups",
+                  "name": "thinly sliced green onion",
+                  "type": "produce"
+              },
+              {
+                  "quantity": "1 pinch",
+                  "name": "cayenne pepper",
+                  "type": "Misc"
+              }
+          ],
+      "steps": [
+              "Preheat oven to 425°F.",
+              "Cut off the woody bottom part of the asparagus spears and discard.",
+              "With a vegetable peeler, peel off the skin on the bottom 2-3 inches of the spears (this keeps the asparagus from being all.\",string.\", and if you eat asparagus you know what I mean by that).",
+              "Place asparagus on foil-lined baking sheet and drizzle with olive oil.",
+              "Sprinkle with salt.",
+              "With your hands, roll the asparagus around until they are evenly coated with oil and salt.",
+              "Roast for 10-15 minutes, depending on the thickness of your stalks and how tender you like them.",
+              "They should be tender when pierced with the tip of a knife.",
+              "The tips of the spears will get very brown but watch them to prevent burning.",
+              "They are great plain, but sometimes I serve them with a light vinaigrette if we need something acidic to balance out our meal."
+          ],
+           "imageURL": "https://images.media-allrecipes.com/userphotos/6775512.jpg",
+          "category": "breakfast/brunch",
+          "cookingTime": "30 mins",
+          "serves": "4-6"
+      }
+  ]

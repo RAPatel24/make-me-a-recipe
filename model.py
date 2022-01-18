@@ -40,7 +40,6 @@ class Preference(db.Model):
     def __repr__(self):
         return f"<Preference user_id={self.user_id} name={self.name} value={self.value}>"
 
-
 def connect_to_db(flask_app, db_uri="postgresql:///make_me_a_recipe_db", echo=True):
     flask_app.config["SQLALCHEMY_DATABASE_URI"] = db_uri
     flask_app.config["SQLALCHEMY_ECHO"] = echo

@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+{% block title %} 
+    Make me a recipe
+{% endblock %}
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            {% if isExternal %} 
+
+            <h2>{{ recipe['title'] }}</h2>
+            <div class="container">
+                <div class="row">
+                    <div class="col-4">
+                        <img src="{{ recipe['image'] }}" style="width: 350px; height: 300px;">
+                    </div>
+                    <div class="col-8">
+                        <h4>Ingredients</h4>
+                        <ul>
+                            {% for ingredient in recipe['extendedIngredients'] %}
+                                <li>{{ ingredient.name }}</li>
+                        {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+           
+           <div class="col-12">
+                <h4>Instructions</h4>
+                {{ recipe['instructions'] }}
+           </div>
+        {% else %}
+
+            {% for item in recipe %}
+                <h1> {{ item.name }}</h1>
+                <div style="display: grid;grid-template-columns: auto auto;">
+                <div>
+                    <img src=" {{ item.imageURL }}" style="height: 250px; width: 300px;">
+                    <p>Cuisine: {{ item.category }}</p>
+                    <p>Ready in: {{ item.cookingTime }}</p>
+                    <p>Serves: {{ item.serves }}</p>
+                </div>
+                <div>
+                    <h3>Ingredients</h3>
+                    <ul>
+                    {% for ingredient in item.ingredients %}
+                        <li>{{ ingredient.name }} {{ ingredient.quantity }}</li>
+                    {% endfor %}
+                    </ul>
+                </div>
+                </div>
+                <h3>Steps:</h3>
+                <ol>
+                {% for step in item.steps %}
+                    <li>{{ step }}</li>
+                {% endfor %}
+                </ol>
+            {% endfor %}
+            
+        {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}
