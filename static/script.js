@@ -18,24 +18,29 @@ function showRecipes(results) {
         recipes.push(recipe)
     }
     const ele = document.querySelector('#recipe_list')
+    ele.insertAdjacentHTML('beforebegin', "<h4>Results</h4>")
     for (key of recipes) {
         console.log(key);
         ele.insertAdjacentHTML('afterbegin', 
-                `<a href="recipe/${key.id}/${key.title}" onclick="gotoRecipe(${key.id})"><div id="recipe_div" style="border: 1px grey solid; padding: 25px;">
+                `<div class="col-4 text-center">
+                    <a href="recipe/${key.id}/${key.title}" onclick="gotoRecipe(${key.id})"><div id="recipe_div" style="border: 1px grey solid; padding: 25px;">
                     <h4>${key.title}</h4>
                     <img src='${key.image}'>
-                    <p><strong>Missed Ingredients:</strong> <i>${key.missedIngredients}</i></p>
                     <p><strong>Used Ingredients:</strong> <i>${key.usedIngredients}</i></p>
-                </div></a>`)
+                    <p><strong>Missed Ingredients:</strong> <i>${key.missedIngredients}</i></p>
+                    </div>
+                    </a>
+                </div>`)
     }
 }
 
 function getRecipes(evt) {
     evt.preventDefault();
     console.log("inside recipes")
+    const api_key = document.getElementById('api-key').innerHTML
     const formInputs = document.querySelector('#search-box').value
-    console.log(formInputs);
-    fetch(`https://api.spoonacular.com/recipes/findByIngredients?ingredients=${formInputs}&number=4&apiKey=f2798eb211fc46cdb56462c776a7bec9`, {
+    const url = `https://api.spoonacular.com/recipes/findByIngredients?ingredients=${formInputs}&number=20&apiKey=${api_key}`
+    fetch(url, {
     headers: {
         'Content-Type': 'application/json',
     },

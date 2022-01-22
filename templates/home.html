@@ -6,7 +6,11 @@
     <div style="visibility: hidden;" id="api-key">{{ API_KEY }}</div>
     <div>
         <h1 style="text-align: center;">Make me a Recipe</h1>
-        <a href="/login">Login</a>
+        {% if loggedIn %}
+            <a href="/logout">Logout | </a>
+        {% else %}
+        <a href="/login">Login | </a>
+        {% endif %}
         <a href="/signup">Signup</a>
          
     </div>
@@ -17,24 +21,65 @@
             <input type="submit" style="width: 80px;height: 35px;">
         </form>
     </div>
-    <div style="padding: 10px;"></div>
-    <h3 style="text-align: center;">Trending Recipes </h3>
-    <div id="recipes grid-container" style="display: grid; grid-template-columns: auto auto auto; column-gap: 20px; row-gap: 20px; margin: 10px; text-align: center">
-        {% for recipe in recipes %}
-            <a href="recipe/{{ recipe.id }}/{{ recipe.name }}" target="_self" style="text-decoration: none;">
-                <div id="grid-item" style="border: 1px grey solid; padding: 20px; border-radius: 10px; margin: 20px;"> 
-                    <h4 style="padding: 5px;">{{ recipe.name }}</h4> 
-                    <div>
-                        <img src="{{ recipe.imageURL }}" style="width: 200px; height: 150px;">
-                    </div>
-                    <p>
-                        <span style="padding-right:  5px;color: red;"> Prep time:</span> <span>{{ recipe.cookingTime}}</span> 
-                        <span style="padding-left:  5px; color: red;"> Serves: </span> <span> {{ recipe.serves }}</span>
-                    </p>
-                </div>
-            </a>
-        {% endfor %}
+    <div class="container">
+        <div class="row" id="recipe_list">
+        </div>
     </div>
-    <div id="recipe_list" style="display: grid; grid-template-columns: auto auto auto; column-gap: 20px; row-gap: 20px; padding: 10px;margin: 10px; text-align: center"></div>
+    <div style="padding: 10px;"></div>
+    <div class="container">
+        <div class="row">
+            <h3 class="text-center">What's Trending on Internet </h3>
+            {% for recipe in recipes %}
+            <div class="col-4 text-center">
+                
+                    <a href="recipe/{{ recipe.id }}/{{ recipe.title }}" target="_self" style="text-decoration: none;">
+                    <div id="grid-item" style="border: 1px grey solid; padding: 20px; border-radius: 10px; margin: 20px;"> 
+                        <h4 style="padding: 5px;">{{ recipe['title'] }}</h4> 
+                        <div>
+                            <img src="{{ recipe['image'] }}" style="width: 200px; height: 150px;">
+                        </div>
+                        <p>
+                            <span style="padding-right:  5px;color: red;"> Prep time:</span> <span>{{ recipe['readyInMinutes']}}</span> 
+                            <span style="padding-left:  5px; color: red;"> Serves: </span> <span> {{ recipe['servings'] }}</span>
+                        </p>
+                    </div>
+                </a> 
+                
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    
+    <div class="container">
+        <div class="row">
+            {% if loggedIn %}
+            <h3 class="text-center">Saved Recipes</h3>
+
+            {% for recipe in saved_recipes %}
+            <div class="col-4 text-center">
+                <a href="recipe/{{ recipe.id }}/{{ recipe.title }}" target="_self" style="text-decoration: none;">
+                    <div id="grid-item" style="border: 1px grey solid; padding: 20px; border-radius: 10px; margin: 20px;"> 
+                        <h4 style="padding: 5px;">{{ recipe['title'] }}</h4> 
+                        <div>
+                            <img src="{{ recipe['image'] }}" style="width: 200px; height: 150px;">
+                        </div>
+                        <p>
+                            <span style="padding-right:  5px;color: red;"> Prep time:</span> <span>{{ recipe['readyInMinutes']}}</span> 
+                            <span style="padding-left:  5px; color: red;"> Serves: </span> <span> {{ recipe['servings'] }}</span>
+                        </p>
+                        <p>
+                        Cuisine: 
+                        {% for cuisine in recipe['cuisines'] %}
+                            {{ cuisine }}
+                        {% endfor %}
+                        </p>
+                    </div> 
+                </a> 
+
+            </div>
+            {% endfor %}
+            {% endif %}
+        </div>
+    </div>
 {% endblock %}
     

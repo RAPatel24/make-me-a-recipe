@@ -1,7 +1,7 @@
 [
     {
         "id": 1,
-      "name": "Roasted Asparagus",
+      "title": "Roasted Asparagus",
       "ingredients": [
               {
                   "quantity": "1 lb",
@@ -31,14 +31,15 @@
               "The tips of the spears will get very brown but watch them to prevent burning.",
               "They are great plain, but sometimes I serve them with a light vinaigrette if we need something acidic to balance out our meal."
           ],
-           "imageURL": "http://img.sndimg.com/food/image/upload/w_266/v1/img/recipes/50/84/7/picMcSyVd.jpg",
+           "image": "http://img.sndimg.com/food/image/upload/w_266/v1/img/recipes/50/84/7/picMcSyVd.jpg",
           "category": "breakfast/brunch",
-          "cookingTime": "25 mins",
-          "serves": "4"
+          "readyInMinutes": "25 mins",
+          "servings": "4",
+          "cuisines": ["Italian"]
     },
     {
         "id": 2,
-      "name": "Big Night Pizza",
+      "title": "Big Night Pizza",
           "ingredients": [
               {
                   "quantity": "5 teaspoons",
@@ -90,14 +91,15 @@
               "Bake at 400 deg Fahrenheit for 15 minutes.",
               "Enjoy!"
           ],
-          "imageURL": "http://upload.wikimedia.org/wikipedia/commons/c/c7/Spinach_pizza.jpg",
+          "image": "http://upload.wikimedia.org/wikipedia/commons/c/c7/Spinach_pizza.jpg",
           "category": "main course",
-          "cookingTime": "40 mins",
-          "serves": "4"
+          "readyInMinutes": "40 mins",
+          "servings": "4",
+          "cuisines": ["Italian","American"]
       },
       {
           "id": 3,
-        "name": "Million Dollar Dip",
+        "title": "Million Dollar Dip",
         "ingredients": [
               {
                   "quantity": "1/2 cup",
@@ -142,9 +144,10 @@
               "The tips of the spears will get very brown but watch them to prevent burning.",
               "They are great plain, but sometimes I serve them with a light vinaigrette if we need something acidic to balance out our meal."
           ],
-           "imageURL": "https://images.media-allrecipes.com/userphotos/6775512.jpg",
+           "image": "https://images.media-allrecipes.com/userphotos/6775512.jpg",
           "category": "breakfast/brunch",
-          "cookingTime": "30 mins",
-          "serves": "4-6"
+          "readyInMinutes": "30 mins",
+          "servings": "4-6",
+          "cuisines": ["American"]
       }
   ]

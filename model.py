@@ -12,7 +12,7 @@ class User(db.Model):
     password = db.Column(db.String)
 
     def __repr__(self):
-        return f"<User user_id={self.id} name = {self.fname} {self.lname} email={self.email}>"
+        return f"<User user_id={self.id} name = {self.fname}  email={self.email}>"
 
 class UserPreference(db.Model):
     '''users table'''
@@ -39,6 +39,18 @@ class Preference(db.Model):
 
     def __repr__(self):
         return f"<Preference user_id={self.user_id} name={self.name} value={self.value}>"
+
+class Recipe(db.Model):
+    __tablename__ = "recipes"
+    id = db.Column(db.Integer, autoincrement=True, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    recipe_id = db.Column(db.Integer, nullable = False)
+
+    user = db.relationship("User", backref="recipes")
+
+    def __repr__(self):
+        return f"<Recipe user_id={self.user_id} recipe_id={self.recipe_id}>"
+
 
 def connect_to_db(flask_app, db_uri="postgresql:///make_me_a_recipe_db", echo=True):
     flask_app.config["SQLALCHEMY_DATABASE_URI"] = db_uri
