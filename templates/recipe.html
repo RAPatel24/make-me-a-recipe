@@ -15,15 +15,15 @@
                     {% else %}
                         <div><a href="?remove=True">Remove Recipe</a></div>
                     {% endif %}
-                    <h2>{{ item.title }}</h2>
+                    <h4 class="color-brown p-10">{{ item.title }}</h4>
                     <div class="container">
                         <div class="row">
-                            <div class="col-6">
-                                <img src="{{ item.image }}" style="width: 350px; height: 300px;">
+                            <div class="col-7">
+                                <img src="{{ item.image }}" style="width: auto; height: auto;">
                             </div>
-                            <div class="col-6">
-                                <h4>Ingredients</h4>
-                                <ul>
+                            <div class="col-5">
+                                <h5 class="color-brown">Ingredients</h4>
+                                <ul class="color-cadetblue">
                                     {% for ingredient in item.extendedIngredients %}
                                         <li>{{ ingredient.original }}</li>
                                     {% endfor %}
@@ -33,8 +33,8 @@
                         </div>
                
                         <div class="col-12">
-                            <h4>Instructions</h4>
-                            <ol>
+                            <h5 class="color-brown p-10">Instructions</h4>
+                            <ol class="color-cadetblue">
                             {% for instruction in item.analyzedInstructions %}
                                 {% for step in instruction['steps'] %}
                                     <li>{{step['step']}}</li>

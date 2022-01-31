@@ -3,38 +3,47 @@
     Make me a recipe
 {% endblock %}
 {% block content %}
-    <div style="visibility: hidden;" id="api-key">{{ API_KEY }}</div>
+    <div style="display: none;" id="api-key">{{ API_KEY }}</div>
+    <div class="pt-20"></div>
+    <div class="pt-20"></div>
     <div>
-        <h1 style="text-align: center;">Make me a Recipe</h1>
-        {% if loggedIn %}
-            <a href="/logout">Logout | </a>
-        {% else %}
-        <a href="/login">Login | </a>
-        {% endif %}
-        <a href="/signup">Signup</a>
-         
-    </div>
-    <div style="padding: 10px;"></div>
-    <div>
-        <form id="search-recipe-form" style="text-align: center;">
-            <input type="text" name = "search-box" id="search-box" style="width: 400px;height: 30px;">
-            <input type="submit" style="width: 80px;height: 35px;">
+        <form id="search-recipe-form" style="justify-content: center;text-align: center;display: flex;position: relative;">
+            <button type=submit onclick="return false;" style="display:none;"></button>
+            <input type="text" name ="search-box" id="search-box" placeholder="Find a Recipe by Ingredients for example: Apple, Cinnamon, Milk" required> 
+            <div style="display: inline;justify-content: center;align-items: center;margin-left: 10px;margin-right: 10px;">
+                <input type="text" name="exclude-ingredient" id="exclude-ingredient" placeholder="exclude ingredient" style="width: 250px;height: 50px;">
+                <a href="#" onclick="excludeIngredient()">
+                    <i class="fa fa-minus-circle" style="font-size:30px;color:grey;position: fixed;top: 135px;right: 200px;"></i>
+                </a>
+            </div>
+            <input type="submit" id="search-recipe-button" style="width: 60px;height: 50px;" value="Go">
         </form>
+        <div id="exclude-ingredient-section" style="display: inline; text-align: center;">
+            {% if loggedIn %}
+                {% for ingredient in exclude_ingredient_list %}
+                <div class="exclude-toast">
+                    <p id="exclude-value">{{ ingredient }}</p>
+                    <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close" onclick="close()"></button>
+                </div>
+                {% endfor %}
+            {% endif %}
+        </div>
+        <button type="button" class="btn btn-primary d-block" data-bs-toggle="modal" data-bs-target="#myModal" id="search-by-recipe-button">Search By Recipe</button>  
     </div>
     <div class="container">
+        <h4 class="d-none" id="results-title">Results</h4>
         <div class="row" id="recipe_list">
         </div>
     </div>
-    <div style="padding: 10px;"></div>
+    <div style="padding: 30px;"></div>
     <div class="container">
         <div class="row">
-            <h3 class="text-center">What's Trending on Internet </h3>
+            <h3 class="text-center color-brown">Today's top 3 </h3>
             {% for recipe in recipes %}
             <div class="col-4 text-center">
-                
                     <a href="recipe/{{ recipe.id }}/{{ recipe.title }}" target="_self" style="text-decoration: none;">
                     <div id="grid-item" style="border: 1px grey solid; padding: 20px; border-radius: 10px; margin: 20px;"> 
-                        <h4 style="padding: 5px;">{{ recipe['title'] }}</h4> 
+                        <h5 style="padding: 5px;"class="color-cadetblue">{{ recipe['title'] }}</h5> 
                         <div>
                             <img src="{{ recipe['image'] }}" style="width: 200px; height: 150px;">
                         </div>
@@ -49,22 +58,24 @@
             {% endfor %}
         </div>
     </div>
-    
+    <div style="padding: 0px;"></div>
     <div class="container">
         <div class="row">
             {% if loggedIn %}
-            <h3 class="text-center">Saved Recipes</h3>
-
+            {% if saved_recipes %}
+                <h3 class="text-center color-brown">Your Saved Recipes</h3>
+            {% endif %}
+            
             {% for recipe in saved_recipes %}
             <div class="col-4 text-center">
                 <a href="recipe/{{ recipe.id }}/{{ recipe.title }}" target="_self" style="text-decoration: none;">
                     <div id="grid-item" style="border: 1px grey solid; padding: 20px; border-radius: 10px; margin: 20px;"> 
-                        <h4 style="padding: 5px;">{{ recipe['title'] }}</h4> 
+                        <h5 style="padding: 5px;" class="color-cadetblue">{{ recipe['title'] }}</h5> 
                         <div>
                             <img src="{{ recipe['image'] }}" style="width: 200px; height: 150px;">
                         </div>
                         <p>
-                            <span style="padding-right:  5px;color: red;"> Prep time:</span> <span>{{ recipe['readyInMinutes']}}</span> 
+                            <span style="padding-right:  5px;color: red;"> Prep time:</span> <span>{{ recipe['readyInMinutes']}} mins</span> 
                             <span style="padding-left:  5px; color: red;"> Serves: </span> <span> {{ recipe['servings'] }}</span>
                         </p>
                         <p>
@@ -77,9 +88,66 @@
                 </a> 
 
             </div>
+
             {% endfor %}
             {% endif %}
         </div>
     </div>
+    <div class="modal" id="myModal">
+        <div class="modal-dialog">
+          <div class="modal-content modal-size">
+            <div class="modal-header">
+                <a href="/"><img src="/static/images/FullLogo_Transparent_NoBuffer.png" class="logo-size-small"></a>
+              <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <!-- Modal body -->
+            <div class="modal-body">
+            <h5 class="color-cadetblue">Search Recipe By</h5>
+              <form id="search-by-recipe" action="/recipes?keyword=true" method="post">
+                <input type="text" name="recipe" class="input-field-style width-300 mr-10" id="search-recipe" placeholder="Search by keyword for ex, pasta" class="field-size-350" required>
+                    <select id="search-by-recipe-diet" name="Diet" class="input-field-style color-gray mr-10 w-180">
+                        <option value="Diet" selected>Diet</option>
+                        <option value="Gluten Free">Gluten Free</option>
+                        <option value="Ketogenic">Ketogenic</option>
+                        <option value="Vegetarian">Vegetarian</option>
+                        <option value="Lacto-Vegetarian">Lacto-Vegetarian</option>
+                        <option value="Vegan">Vegan</option>
+                    </select>
+                    <input type="submit" value="Search" class="color-gray height-40">
+              </form>
+              <p class="color-brown p-10 mb-0">OR</p>
+              <h5 class="color-cadetblue">Search By Cuisine and Meal type</h5>
+              <form id="search-by-cuisine-and-type" action="/recipes" method="post">
+                    <select id="cuisine" name="cuisine" class="input-field-style color-gray mr-10 w-180">
+                        <option value="Cuisine" selected>Cuisine</option>
+                        <option value="Indian">Indian</option>
+                        <option value="Italian">Italian</option>
+                        <option value="Chinese">Chinese</option>
+                        <option value="Mediterranean">Mediterranean</option>
+                    </select>
+                    <select id="type" name="type" class="input-field-style color-gray mr-10 w-180">
+                        <option value="Type" selected>Meal Type</option>
+                        <option value="Main Course">Main Course</option>
+                        <option value="Side Dish">Side Dish</option>
+                        <option value="Breakfast">Breakfast</option>
+                        <option value="Dessert">Dessert</option>
+                        <option value="Soup">Soup</option>
+                        <option value="Salad">Salad</option>
+                        <option value="Appetizer">Appetizer</option>
+                    </select>
+                    <select id="diet" name="Diet" class="input-field-style color-gray mr-10 w-180">
+                        <option value="Diet" selected>Diet</option>
+                        <option value="Gluten Free">Gluten Free</option>
+                        <option value="Ketogenic">Ketogenic</option>
+                        <option value="Vegetarian">Vegetarian</option>
+                        <option value="Lacto-Vegetarian">Lacto-Vegetarian</option>
+                        <option value="Vegan">Vegan</option>
+                    </select>
+                    <input type="submit" value="Search" class="color-gray height-40">
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
 {% endblock %}
     

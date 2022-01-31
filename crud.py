@@ -1,6 +1,6 @@
 """CRUD operations."""
 
-from model import db, User, UserPreference, Preference, Recipe, connect_to_db
+from model import db, User, UserPreference, Preference, Recipe, ExcludeIngredient, connect_to_db
 
 recipe_data = []
 def create_user(fname, lname, email, password):
@@ -39,7 +39,8 @@ def isRecipeSaved(user_id,recipe_id):
 
 def get_saved_recipe_by_id(user_id):
     """ return saved recipes """
-    result = db.session.query(Recipe.recipe_id.distinct()).filter(User.id == user_id).all()
+    result = db.session.query(Recipe.recipe_id).filter(Recipe.user_id == user_id).all()
+    db.session.commit()
     recipe_id_list = []
     for id in result:
         recipe_id_list.append(id[0])
@@ -51,6 +52,21 @@ def remove_recipe(user_id, recipe_id):
     Recipe.query.filter(Recipe.recipe_id == recipe_id, Recipe.user_id == user_id).delete()
     db.session.commit()
     return True
+
+def get_excluded_ingredient(user_id):
+    result = db.session.query(ExcludeIngredient.exclude_ingredient).filter(ExcludeIngredient.user_id == user_id).all()
+    db.session.commit()
+    exclude_ingredient_list = []
+    for ingredient in result:
+        exclude_ingredient_list.append(ingredient[0])
+    return exclude_ingredient_list
+
+def save_ingredient_to_exclude(user_id, ingredient_list):
+    for ingredient in ingredient_list:
+        exclude_entry = ExcludeIngredient(user_id = user_id, exclude_ingredient = ingredient)
+        db.session.add(exclude_entry)
+        db.session.commit()
+    return db.session.query(ExcludeIngredient).filter(ExcludeIngredient.user_id == user_id).all()
 
 if __name__ == "__main__":
     from server import app

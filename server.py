@@ -14,16 +14,19 @@ API_KEY = os.environ['API_KEY']
 @app.route('/')
 def homepage():
     """View homepage."""
-    user_id = helper.get_logged_in_user_id()
-    user_email = helper.get_logged_in_user_email()
+    user_id = session.get("user_id")
+    user_email = session.get("user_email")
     loggedIn = helper.is_logged_in()
 
     recipe_id_list = helper.get_local_recipe_id_list()
     recipe_data = helper.get_local_recipe_data()
 
     saved_recipes = []
+    exclude_ingredient_list = []
     if loggedIn:
         saved_recipe_id_list = crud.get_saved_recipe_by_id(user_id)
+        exclude_ingredient_list = crud.get_excluded_ingredient(user_id)
+        print(exclude_ingredient_list)
         for savedId in saved_recipe_id_list:
             if savedId in recipe_id_list:
                 for recipe in recipe_data:
@@ -34,8 +37,7 @@ def homepage():
                req = requests.get(url)
                jsonData = req.json()
                saved_recipes.append(jsonData)
-    print(len(saved_recipes))
-    return render_template('home.html', recipes=recipe_data, saved_recipes=saved_recipes, API_KEY=API_KEY, loggedIn = loggedIn)
+    return render_template('home.html', recipes=recipe_data, saved_recipes=saved_recipes, exclude_ingredient_list=exclude_ingredient_list, API_KEY=API_KEY, loggedIn = loggedIn)
 
 @app.route('/login')
 def loginpage():
@@ -77,7 +79,8 @@ def process_login():
         # Log in user by storing the user's email in session
         session["user_email"] = user.email
         session["user_id"] = user.id
-        flash(f"Welcome back, {user.fname}!")
+        print(session["user_email"])
+        flash(f"Welcome, {user.fname}!")
 
     return redirect('/')
 
@@ -128,6 +131,32 @@ def showRecipe(recipe_id,recipe_name):
     isRecipeSaved = crud.isRecipeSaved(user_id=user_id,recipe_id=recipe_id)
     return render_template('recipe.html', recipes=recipes, isExternal= isExternal, isRecipeSaved = isRecipeSaved, loggedIn = loggedIn )
 
+@app.route("/recipes",methods=["POST"])
+def getRecipesByKeyword():
+    keyword = request.args.get('keyword')
+    url = ""
+    if keyword:
+        recipe = request.form.get("recipe")
+        diet = request.form.get("Diet")
+        if diet != "Diet":
+            url = f'https://api.spoonacular.com/recipes/complexSearch?query={recipe}&diet={diet}&number=20&apiKey={API_KEY}'
+        else:
+            url = f'https://api.spoonacular.com/recipes/complexSearch?query={recipe}&number=20&apiKey={API_KEY}'
+    else:
+        cuisine = request.form.get("cuisine")
+        mealtype = request.form.get("type")
+        diet = request.form.get("Diet")
+        url = f'https://api.spoonacular.com/recipes/complexSearch?cuisine={cuisine}&diet={diet}&type={mealtype}&number=20&apiKey={API_KEY}'
+
+    result = requests.get(url)
+    jsonData = result.json()
+    return render_template('recipes.html', recipes=jsonData, API_KEY=API_KEY)
+
+@app.route('/review')
+def show_reviews():
+    """Show reviews."""
+
+    return render_template('review.html')
 if __name__ == "__main__":
     # DebugToolbarExtension(app)
     connect_to_db(app)

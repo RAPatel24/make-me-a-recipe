@@ -51,7 +51,16 @@ class Recipe(db.Model):
     def __repr__(self):
         return f"<Recipe user_id={self.user_id} recipe_id={self.recipe_id}>"
 
+class ExcludeIngredient(db.Model):
+    __tablename__ = "exclude_ingredients"
+    id = db.Column(db.Integer, autoincrement=True, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    exclude_ingredient = db.Column(db.String, nullable = False)
+    user = db.relationship("User", backref="exclude_ingredients")
 
+    def __repr__(self):
+        return f"<ExcludeIngredient user_id = {self.user_id} exclude = {self.exclude_ingredient}>"
+        
 def connect_to_db(flask_app, db_uri="postgresql:///make_me_a_recipe_db", echo=True):
     flask_app.config["SQLALCHEMY_DATABASE_URI"] = db_uri
     flask_app.config["SQLALCHEMY_ECHO"] = echo

@@ -5,6 +5,21 @@
 {% block content %}
 <div>
     <h3>Recipes</h3>
-    <div id="recipe_list"></div>
+    <div class="container">
+        <div class="row">
+            {% for key, value in recipes.items() %}
+                    {% if key == 'results' %}
+                        {% for i in value %}
+                        <div class="col-4 text-center card-item">
+                            <a href="recipe/{{i['id']}}/{{i['title']}}">
+                                <p>{{ i['title'] }}</p>
+                                <img src="{{ i['image'] }}" style="width: 250px;">
+                            </a>
+                        </div>
+                        {% endfor %}
+                    {% endif %}
+            {% endfor %}
+        </div>
+    </div>
 </div>
 {% endblock %}
