@@ -1,0 +1,135 @@
+.logo-size{
+    width: 300px;
+}
+.logo-size-small{
+    width: 150px;
+}
+.position-center {
+    justify-content: center;
+    align-items: center;
+}
+.p-10{
+    padding: 10px;
+}
+.pr-15 {
+    padding-right: 15px;
+}
+.mr-15 {
+    margin-right: 15px;
+}
+.mt-10{
+    margin-top: 10px;
+}
+.text-align-right {
+    text-align: right;
+}
+.color-brown {
+    color: brown
+}
+.color-cadetblue {
+    color:darkcyan;
+}
+.color-gray {
+    color: rgb(65, 63, 63);
+}
+#search-box {
+    width: 60%;
+  box-sizing: border-box;
+  border: 2px solid #ccc;
+  border-radius: 4px;
+  font-size: 16px;
+  background-color: white;
+  background-image: url('../static/images/search-icon.png');
+  background-position: 10px 10px; 
+  background-repeat: no-repeat;
+  padding: 12px 20px 12px 40px;
+  background-size: 40px;
+}
+.pt-20 {
+    padding-top: 20px;
+}
+.footer {
+    background-color: lightseagreen;
+    padding: 10px;
+    border: 1px #f1f1f1 solid;
+    width: 100%;
+    position: fixed;
+    bottom: 0;
+    height: 40px;
+  }
+  .footer a{
+      color: white;
+  }
+body {
+    font-family: Comic Sans MS, Comic Sans, cursive;
+}
+.justify-content-center {
+    justify-content: center !important;
+}
+#search-by-recipe-button {
+    text-decoration: underline !important;
+    color: darkslategray !important;
+    background-color: transparent !important;
+    border-color: transparent !important;
+}
+.display-inline{
+    display: inline;
+}
+.modal-size {
+    max-width: 700px;
+    min-width: 700px;
+    max-height: 300px;
+    min-height: 300px;
+}
+.field-size-350 {
+    width: 350px;
+}
+.mb-0{
+    margin-bottom: 0px;
+}
+.input-field-style {
+  box-sizing: border-box;
+  border: 1px solid #7f7f7f;
+  border-radius: 4px;
+  font-size: 14px;
+  height: 40px;
+}
+.width-300 {
+    width: 300px;
+}
+.height-40 {
+    height: 40px;
+}
+.mr-10 {
+    margin-right: 10px;
+}
+.w-180 {
+    width: 180px;
+}
+.card-item{
+    width: 300px;
+    border: 1px grey solid;
+    padding: 10px; 
+    border-radius: 5px; 
+    margin: 20px;
+}
+.signup-form-style {
+    border: 1px grey solid;
+    padding: 20px;
+    border-radius: 5px;
+    margin: 25px;
+}
+#exclude {
+    width: 500px;
+}
+.exclude-toast{
+    width:80px;
+    height:40px;
+    background-color:orange;
+    color:white;
+    justify-content:center;
+    align-items:center;
+    display:inline-flex;
+    border-radius:8px;
+    margin:10px;
+}

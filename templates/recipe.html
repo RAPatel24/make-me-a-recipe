@@ -1,0 +1,82 @@
+{% extends 'base.html' %}
+{% block title %} 
+    Make me a recipe
+{% endblock %}
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            
+            {% if isExternal %} 
+                {% for item in recipes %}
+                    {% if not isRecipeSaved %}
+                        {% set value = '?save=True' if loggedIn else "/signup" %}
+                        <div><a href={{ value }}>save recipe</a></div>
+                    {% else %}
+                        <div><a href="?remove=True">Remove Recipe</a></div>
+                    {% endif %}
+                    <h4 class="color-brown p-10">{{ item.title }}</h4>
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-7">
+                                <img src="{{ item.image }}" style="width: auto; height: auto;">
+                            </div>
+                            <div class="col-5">
+                                <h5 class="color-brown">Ingredients</h4>
+                                <ul class="color-cadetblue">
+                                    {% for ingredient in item.extendedIngredients %}
+                                        <li>{{ ingredient.original }}</li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        </div>
+                        </div>
+               
+                        <div class="col-12">
+                            <h5 class="color-brown p-10">Instructions</h4>
+                            <ol class="color-cadetblue">
+                            {% for instruction in item.analyzedInstructions %}
+                                {% for step in instruction['steps'] %}
+                                    <li>{{step['step']}}</li>
+                                {%endfor%}
+                            {% endfor %}
+                            </ol>
+                        </div>
+    
+                {% endfor %}
+            {% else %}
+        
+            {% for item in recipes %}
+                {% if not isRecipeSaved %}
+                    <div><a href="?save=True">save recipe</a></div>
+                {% endif %}
+                <h1> {{ item.title }}</h1>
+                <div style="display: grid;grid-template-columns: auto auto;">
+                <div>
+                    <img src=" {{ item.image }}" style="height: 250px; width: 300px;">
+                    <p>Cuisine: {{ item.category }}</p>
+                    <p>Ready in: {{ item.readyInMinutes }}</p>
+                    <p>Serves: {{ item.servings }}</p>
+                </div>
+                <div>
+                    <h3>Ingredients</h3>
+                    <ul>
+                    {% for ingredient in item.ingredients %}
+                        <li>{{ ingredient.name }} {{ ingredient.quantity }}</li>
+                    {% endfor %}
+                    </ul>
+                </div>
+                </div>
+                <h3>Steps:</h3>
+                <ol>
+                {% for step in item.steps %}
+                    <li>{{ step }}</li>
+                {% endfor %}
+                </ol>
+            {% endfor %}
+
+        {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}
