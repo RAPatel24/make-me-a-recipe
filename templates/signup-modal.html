@@ -1,0 +1,48 @@
+<div class="modal-dialog">
+    <div class="modal-content signup-modal-size">
+        <div class="modal-header">
+            <div class="text-center">
+                <a href="/"><img src="/static/images/FullLogo_Transparent_NoBuffer.png" class="logo-size"></img></a>
+            </div>
+            <a href="?hideSignupModal=True">close</a>
+        </div>
+        <div class="modal-body">
+            {% for msg in get_flashed_messages() %}
+            <div class="alert alert-info alert-dismissible fade show" style="width: 60%; padding: 10px;">
+              <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                {{ msg }}
+            </div>   
+            {% endfor %}
+        <div class="alert alert-success alert-dismissible fade show m-10 d-none" role="alert">
+            <p id="signup-message"></p>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        <div class="alert alert-danger alert-dismissible fade show m-10 d-none" role="alert">
+            <p id="error-message"></p>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        <div class="m-10">
+            <form id="signup-form">
+                <div style="padding: 2px;" class="mt-10">
+                    First Name: <input type="text" name="fname" id="fname" required>
+                </div>
+                <div style="padding: 4px;" class="mt-10">
+                    Last Name: <input type="text" name="lname" id="lname" required>
+                </div>
+                <div style="padding: 2px;" class="mt-10">
+                    Email: <input type="email" name="email" id="email" required> 
+                </div>
+                <div style="padding: 2px;" class="mt-10">
+                    Password: <input type="password" name="password" id="password" required>
+                </div>
+                <div class="mt-10">
+                    <label for="exclude">Any food allergies</label><br>
+                    <input type="text" id="exclude" placeholder="enter food intolerances separated by comma for ex, milk, peanuts" name="exclude">
+                </div>
+                <input type="submit" value="Signup" class="mt-10">
+            </form>
+            <div class="mt-10"><span>Already a member?</span><a href="/login">Log In</a></div>
+        </div>
+        </div>
+    </div>
+</div>

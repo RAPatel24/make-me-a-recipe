@@ -11,11 +11,18 @@
                     {% if key == 'results' %}
                         {% for i in value %}
                         <div class="col-4 text-center card-item">
+                            <a href="javascript:void(0);" id="save-{{i['id']}}" onclick="saveRecipe('{{i['id']}}','{{i['title']}}')">
+                                <i class='far fa-heart' style='font-size:24px' id="save-heart-icon"></i>
+                            </a>
+                            <a href="javascript:void(0);" id="remove-{{i['id']}}" style="display: none;" onclick="removeRecipe('{{i['id']}}','{{i['title']}}')">
+                                <i class='fa fa-heart' style='font-size:24px' id="save-heart-icon"></i>
+                            </a>
                             <a href="recipe/{{i['id']}}/{{i['title']}}">
                                 <p>{{ i['title'] }}</p>
                                 <img src="{{ i['image'] }}" style="width: 250px;">
                             </a>
                         </div>
+                        
                         {% endfor %}
                     {% endif %}
             {% endfor %}

@@ -1,15 +1,15 @@
-from flask import Flask, render_template, request, flash, session, redirect
+from flask import Flask, render_template, request, flash, session, redirect, jsonify
 from model import connect_to_db
-import crud
-import helper
+import crud,helper,json,os,requests
 from jinja2 import StrictUndefined
-import json
-import requests
-import os
+from sendgrid import SendGridAPIClient
+from sendgrid.helpers.mail import Mail
+
 app = Flask(__name__)
 app.secret_key = "dev"
 app.jinja_env.undefined = StrictUndefined
 API_KEY = os.environ['API_KEY']
+TWILIO_KEY = os.environ['TWILIO_KEY']
 
 @app.route('/')
 def homepage():
@@ -17,27 +17,26 @@ def homepage():
     user_id = session.get("user_id")
     user_email = session.get("user_email")
     loggedIn = helper.is_logged_in()
-
-    recipe_id_list = helper.get_local_recipe_id_list()
     recipe_data = helper.get_local_recipe_data()
 
-    saved_recipes = []
     exclude_ingredient_list = []
     if loggedIn:
-        saved_recipe_id_list = crud.get_saved_recipe_by_id(user_id)
         exclude_ingredient_list = crud.get_excluded_ingredient(user_id)
-        print(exclude_ingredient_list)
-        for savedId in saved_recipe_id_list:
-            if savedId in recipe_id_list:
-                for recipe in recipe_data:
-                    if recipe['id'] == savedId:
-                        saved_recipes.append(recipe)
-            else:
-               url = f'https://api.spoonacular.com/recipes/{savedId}/information?includeNutrition=false&apiKey={API_KEY}'
-               req = requests.get(url)
-               jsonData = req.json()
-               saved_recipes.append(jsonData)
-    return render_template('home.html', recipes=recipe_data, saved_recipes=saved_recipes, exclude_ingredient_list=exclude_ingredient_list, API_KEY=API_KEY, loggedIn = loggedIn)
+
+    return render_template('home.html', recipes_local=recipe_data, exclude_ingredient_list=exclude_ingredient_list, API_KEY=API_KEY, loggedIn = loggedIn)
+
+@app.route('/favorites')
+def show_favorites():
+    """ View saved recipe page """
+    saved_recipes = []
+    user_id = session.get("user_id")
+    saved_recipe_id_list = crud.get_saved_recipe_by_id(user_id)
+    for savedId in saved_recipe_id_list:
+        url = f'https://api.spoonacular.com/recipes/{savedId}/information?includeNutrition=false&apiKey={API_KEY}'
+        req = requests.get(url)
+        jsonData = req.json()
+        saved_recipes.append(jsonData)
+    return render_template('favorites.html', saved_recipes=saved_recipes, API_KEY=API_KEY)
 
 @app.route('/login')
 def loginpage():
@@ -56,15 +55,30 @@ def register_user():
     lname = request.form.get("lname")
     email = request.form.get("email")
     password = request.form.get("password")
-
+    confirmpassword = request.form.get("confirm-password")
+    exclude = request.form.get("exclude")
+    exclude_list = exclude.split(",")
+    print(f'exclude: {exclude}')
+    print(f'exclude list: {exclude_list}')
     user = crud.get_user_by_email(email)
+    
     if user:
         flash("Cannot create an account with that email. Try again.")
+    
     else:
-        crud.create_user(fname, lname, email, password)
-        flash("Account created! Please log in.")
+        if password == confirmpassword:
+            crud.create_user(fname, lname, email, password)
+            if exclude:
+                user_id = crud.get_user_id_by_email(email)
+                if user_id:
+                    crud.save_ingredient_to_exclude(user_id, exclude_list)
+            flash("Account created! Please log in.")
+        else:
+            flash("Password and confirm password are not same, please try again!")
+            return render_template('signup.html')
 
-    return redirect("/")
+    return redirect('/')
+    
 
 @app.route("/login", methods=["POST"])
 def process_login():
@@ -79,7 +93,6 @@ def process_login():
         # Log in user by storing the user's email in session
         session["user_email"] = user.email
         session["user_id"] = user.id
-        print(session["user_email"])
         flash(f"Welcome, {user.fname}!")
 
     return redirect('/')
@@ -101,35 +114,43 @@ def showRecipes():
 @app.route("/recipe/<int:recipe_id>/<recipe_name>")
 def showRecipe(recipe_id,recipe_name):
     """ view recipe """
-    recipes = []
-    recipe_id_list = helper.get_local_recipe_id_list()
-    recipe_data = helper.get_local_recipe_data()
+    recipe = []
     loggedIn = helper.is_logged_in()
-    
-    if recipe_id in recipe_id_list:
-        isExternal = False
-        for value in recipe_data:
-            if value['id'] == recipe_id:
-                recipes.append(value)
-    else:
-        isExternal = True
-        recipes = helper.get_recipes(recipe_id, API_KEY)
-    ''' save recipe '''
-    name = session.get('user_email')
     user_id = session.get('user_id')
+    recipe = crud.get_recipe(recipe_id, API_KEY)
+
+    """ save recipe """
     save = request.args.get('save')
     remove = request.args.get('remove')
+
     isRecipeSaved = crud.isRecipeSaved(user_id=user_id,recipe_id=recipe_id)
+    print(f'before - recipe is saved: {isRecipeSaved}')
+
     if loggedIn and save:
         saveRecipe = crud.save_recipe(user_id,recipe_id)
         if saveRecipe:
             flash(f"Recipe - {recipe_name} is saved!")
+
+    isRecipeSaved = crud.isRecipeSaved(user_id=user_id,recipe_id=recipe_id)
+    print(f'after - if recipe is saved: {isRecipeSaved}')
+
+    if save and user_id == None:
+        return redirect('/signup')
+
+    """ remove recipe """
     if loggedIn and remove:
         removeRecipe = crud.remove_recipe(user_id=user_id,recipe_id=recipe_id)
         if removeRecipe:
             flash(f"Recipe - {recipe_name} is removed!")
     isRecipeSaved = crud.isRecipeSaved(user_id=user_id,recipe_id=recipe_id)
-    return render_template('recipe.html', recipes=recipes, isExternal= isExternal, isRecipeSaved = isRecipeSaved, loggedIn = loggedIn )
+
+    ''' add review '''
+    review = request.args.get('review')
+    rating = request.args.get('rating')
+    if review and rating:
+        test_review = crud.add_review(user_id=user_id, recipe_id=recipe_id, review=review, rating=rating)
+
+    return render_template('recipe.html', recipe=recipe, isRecipeSaved = isRecipeSaved, loggedIn = loggedIn)
 
 @app.route("/recipes",methods=["POST"])
 def getRecipesByKeyword():
@@ -139,14 +160,14 @@ def getRecipesByKeyword():
         recipe = request.form.get("recipe")
         diet = request.form.get("Diet")
         if diet != "Diet":
-            url = f'https://api.spoonacular.com/recipes/complexSearch?query={recipe}&diet={diet}&number=20&apiKey={API_KEY}'
+            url = f'https://api.spoonacular.com/recipes/complexSearch?query={recipe}&diet={diet}&number=40&apiKey={API_KEY}'
         else:
-            url = f'https://api.spoonacular.com/recipes/complexSearch?query={recipe}&number=20&apiKey={API_KEY}'
+            url = f'https://api.spoonacular.com/recipes/complexSearch?query={recipe}&number=40&apiKey={API_KEY}'
     else:
         cuisine = request.form.get("cuisine")
         mealtype = request.form.get("type")
         diet = request.form.get("Diet")
-        url = f'https://api.spoonacular.com/recipes/complexSearch?cuisine={cuisine}&diet={diet}&type={mealtype}&number=20&apiKey={API_KEY}'
+        url = f'https://api.spoonacular.com/recipes/complexSearch?cuisine={cuisine}&diet={diet}&type={mealtype}&number=40&apiKey={API_KEY}'
 
     result = requests.get(url)
     jsonData = result.json()
@@ -157,6 +178,47 @@ def show_reviews():
     """Show reviews."""
 
     return render_template('review.html')
+
+@app.route("/reviews/<int:recipe_id>")
+def reviews(recipe_id):
+    results = crud.get_review(recipe_id)
+    return jsonify(results)
+
+@app.route("/reviewcount/<int:recipe_id>")
+def review_count(recipe_id):
+    results = crud.get_reviews_total(recipe_id)
+    return jsonify(results)
+
+@app.route("/email")
+def send_email():
+    email = request.args.get('email')
+    recipe_id = request.args.get('recipe_id')
+    recipe_title = request.args.get('recipe_title')
+    recipe = crud.get_recipe(recipe_id, API_KEY)
+    recipe_url = f'http://localhost:5001/recipe/{recipe_id}/{recipe_title}'
+    image_url = ""
+    
+    for value in recipe:
+        image_url = value['imageUrl']
+
+    message = Mail(
+        from_email='rapatel765@gmail.com',
+        to_emails=email,
+        subject=f'Make Me A Recipe - {recipe_title}',
+        html_content = f'<strong>{recipe_title}</strong><div><img src="{ image_url }" /></div><strong><a href="{recipe_url}">Click here to find full recipe</a></strong><p>Regards,<strong>Team Make me a recipe</strong></p>')
+    sg = SendGridAPIClient(TWILIO_KEY)
+    response = sg.send(message)
+    results = {'status_code': response.status_code, 'response_body': response.body}
+    
+    return jsonify(results['status_code'])
+
+@app.route("/<category>")
+def getRecipesByCategory(category):
+    url = f'https://api.spoonacular.com/recipes/complexSearch?query={category}&number=10&apiKey={API_KEY}'
+    result = requests.get(url)
+    jsonData = result.json()
+    return render_template('recipes.html', recipes=jsonData, API_KEY=API_KEY)
+
 if __name__ == "__main__":
     # DebugToolbarExtension(app)
     connect_to_db(app)

@@ -2,7 +2,7 @@ import json, requests
 from flask import session
 
 def get_local_recipe_data():
-    with open("data/recipes.json") as f:
+    with open("data/home-recipes.json") as f:
         recipe_data = json.loads(f.read())
 
     return recipe_data

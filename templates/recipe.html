@@ -2,32 +2,63 @@
 {% block title %} 
     Make me a recipe
 {% endblock %}
+
 {% block content %}
 <div class="container">
     <div class="row">
         <div class="col-12">
-            
-            {% if isExternal %} 
-                {% for item in recipes %}
-                    {% if not isRecipeSaved %}
-                        {% set value = '?save=True' if loggedIn else "/signup" %}
-                        <div><a href={{ value }}>save recipe</a></div>
-                    {% else %}
-                        <div><a href="?remove=True">Remove Recipe</a></div>
-                    {% endif %}
-                    <h4 class="color-brown p-10">{{ item.title }}</h4>
+                {% for item in recipe %}
+                    <p id="recipe-id" hidden>{{ item.recipe_id }}</p>
+                    <div class="p-10">
+                        <h4 class="color-brown m-0" id="recipe-title">{{ item.title }}</h4>
+                        <span id="review-count">
+                            <a href="#test-reviews" id="review-count">reviews</a>
+                        </span>
+                    </div>
                     <div class="container">
                         <div class="row">
                             <div class="col-7">
-                                <img src="{{ item.image }}" style="width: auto; height: auto;">
+                                <img src="{{ item.imageUrl }}" style="width: auto; height: auto;">
+                                <p>Servings {{ item.servings }}</p>
+                                <p> Ready in {{ item.readyInMinutes}} mins</p>
                             </div>
                             <div class="col-5">
                                 <h5 class="color-brown">Ingredients</h4>
                                 <ul class="color-cadetblue">
-                                    {% for ingredient in item.extendedIngredients %}
-                                        <li>{{ ingredient.original }}</li>
+                                    {% for ingredient in item.ingredients %}
+                                        <li>{{ ingredient }}</li>
                                     {% endfor %}
                                 </ul>
+                                <div>
+                                    <p>Nutrition Facts</p>
+                                    <ul>
+                                        {% for nutrient, amount in item.nutrition.items() %}
+                                            <li> {{ nutrient }} : {{ amount}}</li>
+                                        {% endfor%}
+                                    </ul>   
+                                   
+                                </div>
+                                <div class="d-flex">
+                                    {% if not isRecipeSaved %}
+                                        <a href="?save=True" class="d-grid text-decoration-none icon-style">
+                                            <i class='far fa-heart' style='font-size:24px'></i>
+                                            <span>save</span>
+                                        </a>
+                                    {% else %}
+                                        <a href="?remove=True" class="d-grid text-decoration-none icon-style">
+                                            <i class='fa fa-heart' style='font-size:24px'></i>
+                                            <span>Remove</span>
+                                        </a>
+                                    {% endif %}
+                                        <a href="javascript:void(0);" onclick="openPrintPopup()" class="d-grid text-decoration-none icon-style">
+                                            <i class='fas fa-print' style='font-size:24px'></i>
+                                            <span>print</span>
+                                        </a>
+                                        <a data-bs-toggle="modal" data-bs-target="#emailModal" class="d-grid text-decoration-none icon-style">
+                                            <i class='fas fa-envelope-square' style='font-size:24px'></i>
+                                            <span>Email</span>
+                                        </a>
+                                </div>
                             </div>
                         </div>
                         </div>
@@ -35,48 +66,62 @@
                         <div class="col-12">
                             <h5 class="color-brown p-10">Instructions</h4>
                             <ol class="color-cadetblue">
-                            {% for instruction in item.analyzedInstructions %}
-                                {% for step in instruction['steps'] %}
-                                    <li>{{step['step']}}</li>
-                                {%endfor%}
+                            {% for instruction in item.instructions %}
+                                    <li>{{ instruction }}</li>
                             {% endfor %}
                             </ol>
                         </div>
-    
+                        <div>
+                            <p>Source url : {{ item.spoonacularSourceUrl }} </p>
+                        </div>
                 {% endfor %}
-            {% else %}
-        
-            {% for item in recipes %}
-                {% if not isRecipeSaved %}
-                    <div><a href="?save=True">save recipe</a></div>
-                {% endif %}
-                <h1> {{ item.title }}</h1>
-                <div style="display: grid;grid-template-columns: auto auto;">
-                <div>
-                    <img src=" {{ item.image }}" style="height: 250px; width: 300px;">
-                    <p>Cuisine: {{ item.category }}</p>
-                    <p>Ready in: {{ item.readyInMinutes }}</p>
-                    <p>Serves: {{ item.servings }}</p>
-                </div>
-                <div>
-                    <h3>Ingredients</h3>
-                    <ul>
-                    {% for ingredient in item.ingredients %}
-                        <li>{{ ingredient.name }} {{ ingredient.quantity }}</li>
-                    {% endfor %}
-                    </ul>
-                </div>
-                </div>
-                <h3>Steps:</h3>
-                <ol>
-                {% for step in item.steps %}
-                    <li>{{ step }}</li>
-                {% endfor %}
-                </ol>
-            {% endfor %}
-
-        {% endif %}
         </div>
     </div>
+    <div class="divider"></div>
+    <div class="review-form">
+        <p>Add a Review</p>
+        <form id="add-review-form" class="d-flex">
+            <div class="p-10">
+                <label for="rating">Rating:</label>
+                <select class="rating-select" name="rating">
+                    <option>1</option>
+                    <option>2</option>
+                    <option>3</option>
+                    <option>4</option>
+                    <option>5</option>
+                  </select>
+            </div>
+            <div class="p-10 d-flex">
+                <label for="review" class="form-label">Review:</label>
+                <input type="text" class="form-control w-500" id="review" placeholder="enter review" name="review" required>
+            </div>
+            <div class="p-10">
+                <button type="submit" class="h-30" id="add-review">Add Review</button>
+            </div>
+        </form>
+    </div>
+    <div class="modal fade" id="emailModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <form action="">
+                  <input type="email" value="{{session.get('user_email')}}" id="send-email-value"/>
+                  <input type="submit" value="send email" onclick="sendEmail()"/>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    <div id="test-reviews"></div>
 </div>
+{% endblock %}
+{% block js %}
+  <script src="/static/js/reviews.jsx" type="text/jsx"></script>
+  <script src="/static/js/review-count.jsx" type="text/jsx"></script>
 {% endblock %}

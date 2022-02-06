@@ -12,7 +12,7 @@ class User(db.Model):
     password = db.Column(db.String)
 
     def __repr__(self):
-        return f"<User user_id={self.id} name = {self.fname}  email={self.email}>"
+        return f"<User user_id={self.id} name = {self.fname} {self.lname} email={self.email}>"
 
 class UserPreference(db.Model):
     '''users table'''
@@ -57,9 +57,19 @@ class ExcludeIngredient(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     exclude_ingredient = db.Column(db.String, nullable = False)
     user = db.relationship("User", backref="exclude_ingredients")
-
     def __repr__(self):
         return f"<ExcludeIngredient user_id = {self.user_id} exclude = {self.exclude_ingredient}>"
+
+class Review(db.Model):
+    __tablename__ = "reviews"
+    id = db.Column(db.Integer, autoincrement=True, primary_key = True)
+    recipe_id = db.Column(db.Integer, nullable = False)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    recipe_review = db.Column(db.String, nullable = True)
+    recipe_rating = db.Column(db.Integer, nullable = False)
+    user = db.relationship("User", backref="reviews")
+    def __repr__(self):
+        return f"<Review user_id = {self.user_id} recipe_id = {self.recipe_id} review = {self.recipe_review} rating = {self.recipe_rating}>"
         
 def connect_to_db(flask_app, db_uri="postgresql:///make_me_a_recipe_db", echo=True):
     flask_app.config["SQLALCHEMY_DATABASE_URI"] = db_uri

@@ -1,0 +1,32 @@
+[
+    {
+        "id": 1,
+        "title": "10 Healthy Recipes",
+        "image": "/static/images/healthy.jpeg",
+        "category": "Healthy"
+    },
+    {
+        "id": 2,
+        "title": "Brunch Recipes",
+        "image": "/static/images/brunch.png",
+        "category": "brunch"
+    },
+    {
+        "id": 3,
+        "title": "10 Fancy Soups To Make",
+        "image": "/static/images/soup.png",
+        "category": "soup"
+    },
+    {
+        "id": 4,
+        "title": "10 Quick Recipes",
+        "image": "/static/images/quick.png",
+        "category": "quick"
+    },
+    {
+        "id": 5,
+        "title": "Vegan Recipes",
+        "image": "/static/images/vegan.jpeg",
+        "category": "vegan"
+    }
+  ]

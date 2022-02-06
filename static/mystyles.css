@@ -8,6 +8,9 @@
     justify-content: center;
     align-items: center;
 }
+.m-10{
+    margin: 10px;
+}
 .p-10{
     padding: 10px;
 }
@@ -19,6 +22,9 @@
 }
 .mt-10{
     margin-top: 10px;
+}
+.m-0 {
+    margin: 0px;
 }
 .text-align-right {
     text-align: right;
@@ -132,4 +138,39 @@ body {
     display:inline-flex;
     border-radius:8px;
     margin:10px;
+}
+.d-grid {
+    display: grid;
+}
+.text-decoration-none{
+    text-decoration: none;
+}
+.icon-style{
+    width: 60px;
+    text-align: center;
+    height: 60px;
+    border: 2px red solid;
+    padding: 6px;
+    margin: 10px;
+}
+.review-form {
+    border: 1px gray solid;
+    padding: 20px;
+}
+.rating-select {
+    height: 30px;
+}
+.h-30 {
+    height: 30px;
+}
+.w-500{
+    width: 500px;
+}
+.float-right{
+    float: right;
+}
+.signup-modal-size{
+    max-width: 500px;
+    min-width: 600px;
+    height: 450px;
 }

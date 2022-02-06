@@ -17,13 +17,13 @@
                 </a>
             </div>
             <input type="submit" id="search-recipe-button" style="width: 60px;height: 50px;" value="Go">
-        </form>
+        </form> 
         <div id="exclude-ingredient-section" style="display: inline; text-align: center;">
             {% if loggedIn %}
                 {% for ingredient in exclude_ingredient_list %}
-                <div class="exclude-toast">
+                <div class="exclude-toast" id="{{ingredient.strip()}}">
                     <p id="exclude-value">{{ ingredient }}</p>
-                    <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close" onclick="close()"></button>
+                    <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close" onClick=closeButton({{ingredient.strip()}})></button>
                 </div>
                 {% endfor %}
             {% endif %}
@@ -39,58 +39,19 @@
     <div class="container">
         <div class="row">
             <h3 class="text-center color-brown">Today's top 3 </h3>
-            {% for recipe in recipes %}
+            {% for recipe in recipes_local %}
             <div class="col-4 text-center">
-                    <a href="recipe/{{ recipe.id }}/{{ recipe.title }}" target="_self" style="text-decoration: none;">
+                    <a href="/{{ recipe.category}}" target="_self" style="text-decoration: none;">
                     <div id="grid-item" style="border: 1px grey solid; padding: 20px; border-radius: 10px; margin: 20px;"> 
                         <h5 style="padding: 5px;"class="color-cadetblue">{{ recipe['title'] }}</h5> 
                         <div>
                             <img src="{{ recipe['image'] }}" style="width: 200px; height: 150px;">
                         </div>
-                        <p>
-                            <span style="padding-right:  5px;color: red;"> Prep time:</span> <span>{{ recipe['readyInMinutes']}}</span> 
-                            <span style="padding-left:  5px; color: red;"> Serves: </span> <span> {{ recipe['servings'] }}</span>
-                        </p>
                     </div>
                 </a> 
                 
             </div>
             {% endfor %}
-        </div>
-    </div>
-    <div style="padding: 0px;"></div>
-    <div class="container">
-        <div class="row">
-            {% if loggedIn %}
-            {% if saved_recipes %}
-                <h3 class="text-center color-brown">Your Saved Recipes</h3>
-            {% endif %}
-            
-            {% for recipe in saved_recipes %}
-            <div class="col-4 text-center">
-                <a href="recipe/{{ recipe.id }}/{{ recipe.title }}" target="_self" style="text-decoration: none;">
-                    <div id="grid-item" style="border: 1px grey solid; padding: 20px; border-radius: 10px; margin: 20px;"> 
-                        <h5 style="padding: 5px;" class="color-cadetblue">{{ recipe['title'] }}</h5> 
-                        <div>
-                            <img src="{{ recipe['image'] }}" style="width: 200px; height: 150px;">
-                        </div>
-                        <p>
-                            <span style="padding-right:  5px;color: red;"> Prep time:</span> <span>{{ recipe['readyInMinutes']}} mins</span> 
-                            <span style="padding-left:  5px; color: red;"> Serves: </span> <span> {{ recipe['servings'] }}</span>
-                        </p>
-                        <p>
-                        Cuisine: 
-                        {% for cuisine in recipe['cuisines'] %}
-                            {{ cuisine }}
-                        {% endfor %}
-                        </p>
-                    </div> 
-                </a> 
-
-            </div>
-
-            {% endfor %}
-            {% endif %}
         </div>
     </div>
     <div class="modal" id="myModal">
