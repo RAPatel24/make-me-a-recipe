@@ -7,20 +7,27 @@
     <div class="pt-20"></div>
     <div class="pt-20"></div>
     <div>
-        <form id="search-recipe-form" style="justify-content: center;text-align: center;display: flex;position: relative;">
-            <button type=submit onclick="return false;" style="display:none;"></button>
-            <input type="text" name ="search-box" id="search-box" placeholder="Find a Recipe by Ingredients for example: Apple, Cinnamon, Milk" required> 
-            <div style="display: inline;justify-content: center;align-items: center;margin-left: 10px;margin-right: 10px;">
-                <input type="text" name="exclude-ingredient" id="exclude-ingredient" placeholder="exclude ingredient" style="width: 250px;height: 50px;">
-                <a href="#" onclick="excludeIngredient()">
-                    <i class="fa fa-minus-circle" style="font-size:30px;color:grey;position: fixed;top: 135px;right: 200px;"></i>
-                </a>
+        <form action="/" method="post" >
+            <div style="justify-content: center;text-align: center;display: flex;position: relative;">
+                <input type="text" name ="search-box" id="search-box" placeholder="Find a Recipe by Ingredients for example: Apple, Cinnamon, Milk" required> 
             </div>
-            <input type="submit" id="search-recipe-button" style="width: 60px;height: 50px;" value="Go">
+            <div class="exclude-ingredients" style="display: flex;margin: 50px;">
+                <p>Exclude ingredients</p>
+                {% for item in intolerences %}
+                    {% if item in exclude_list %}
+                        <input type="checkbox" id="{{item}}" name="{{item}}" value="{{item}}" class="m-10" checked> 
+                        <label for="{{ item }}"> {{ item }} </label><br>
+                    {% else %}
+                        <input type="checkbox" id="{{item}}" name="{{item}}" value="{{item}}" class="m-10"> 
+                        <label for="{{ item }}"> {{ item }} </label><br>
+                    {% endif %}
+                {% endfor %}
+            </div>
+            <input type="submit" style="width: 60px;height: 50px;" value="Go">
         </form> 
         <div id="exclude-ingredient-section" style="display: inline; text-align: center;">
             {% if loggedIn %}
-                {% for ingredient in exclude_ingredient_list %}
+                {% for ingredient in exclude_list %}
                 <div class="exclude-toast" id="{{ingredient.strip()}}">
                     <p id="exclude-value">{{ ingredient }}</p>
                     <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close" onClick=closeButton({{ingredient.strip()}})></button>
@@ -35,6 +42,41 @@
         <div class="row" id="recipe_list">
         </div>
     </div>
+    {% if recipes %}
+
+    <div class="container">
+        <div class="row">
+            <p>Results for {{ search_string }}</p>
+            {% for recipe in recipes %}
+            <div class="col-4 card-item">
+                <a href="javascript:void(0);" id="save-{{recipe['id']}}" onclick="saveRecipe('{{recipe['id']}}','{{recipe['title']}}')">
+                    <i class='far fa-heart' style='font-size:24px' id="save-heart-icon"></i>
+                </a>
+                <a href="javascript:void(0);" id="remove-{{recipe['id']}}" style="display:none" onclick="removeRecipe('{{recipe['id']}}','{{recipe['title']}}')">
+                    <i class='fa fa-heart' style='font-size:24px' id="save-heart-icon"></i>
+                </a>
+                    <a href="recipe/{{recipe['id']}}/{{recipe['title']}}">
+                        <p>{{ recipe['title'] }}</p>
+                        <img src="{{ recipe['image']}}">
+                        <p>
+                            Used Ingredients: 
+                            {% for ingredient in recipe['usedIngredients'] %}
+                                {{ ingredient.name}},
+                            {% endfor %}
+                        </p>
+                        <p>
+                            Missed Ingredients:
+                            {% for ingredient in recipe['missedIngredients'] %}
+                                {{ ingredient.name}},
+                            {% endfor %}
+                        </p>
+                    </a>
+                    
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
     <div style="padding: 30px;"></div>
     <div class="container">
         <div class="row">

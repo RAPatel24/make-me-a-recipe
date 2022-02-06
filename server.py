@@ -19,11 +19,53 @@ def homepage():
     loggedIn = helper.is_logged_in()
     recipe_data = helper.get_local_recipe_data()
 
-    exclude_ingredient_list = []
+    get_exclude_ingredient_list = []
     if loggedIn:
-        exclude_ingredient_list = crud.get_excluded_ingredient(user_id)
+        get_exclude_ingredient_list = crud.get_excluded_ingredient(user_id)
 
-    return render_template('home.html', recipes_local=recipe_data, exclude_ingredient_list=exclude_ingredient_list, API_KEY=API_KEY, loggedIn = loggedIn)
+    intolerences = ["egg","peanut","milk","shellfish","walnut","cashew","wheat","soy","sesame"]
+
+    return render_template('home.html', exclude_list = get_exclude_ingredient_list, intolerences=intolerences, recipes=[], search_string=[], recipes_local=recipe_data, API_KEY=API_KEY, loggedIn = loggedIn)
+
+@app.route('/', methods=["POST"])
+def home():
+    """View homepage."""
+    user_id = session.get("user_id")
+    user_email = session.get("user_email")
+    loggedIn = helper.is_logged_in()
+    recipe_data = helper.get_local_recipe_data()
+    ingredients = request.form.get('search-box')
+    exclude_ingredients_list = []
+    intolerences = ["egg","peanut","milk","shellfish","walnut","cashew","wheat","soy","sesame"]
+    for item in intolerences:
+        if request.form.get(item) is not None:
+            exclude_ingredients_list.append(request.form.get(item))
+    recipes = []
+    url = f'https://api.spoonacular.com/recipes/findByIngredients?ingredients={ingredients}&number=40&apiKey={API_KEY}'
+    results = requests.get(url)
+    json_data = results.json()
+    for recipe in json_data:
+        missedIngredients = []
+        for ingredient in recipe['missedIngredients']:
+            missedIngredients.append(ingredient['name'])
+        if not excluded_ingredient_present(missedIngredients, exclude_ingredients_list):
+            recipes.append(recipe)
+        
+    get_exclude_ingredient_list = []
+    if loggedIn:
+        get_exclude_ingredient_list = crud.get_excluded_ingredient(user_id)
+    search_string = []
+    search_string.append(ingredients)
+    search_string.append(exclude_ingredients_list)
+    
+    return render_template('home.html', exclude_list=get_exclude_ingredient_list, intolerences=intolerences, search_string = search_string, recipes=recipes, recipes_local=recipe_data, API_KEY=API_KEY, loggedIn = loggedIn)
+
+def excluded_ingredient_present(missedIngredients, exclude_ingredients_list):
+    for excluded in exclude_ingredients_list:
+       for missed in missedIngredients:
+           if excluded in missed:
+               return True
+    return False
 
 @app.route('/favorites')
 def show_favorites():
@@ -56,10 +98,27 @@ def register_user():
     email = request.form.get("email")
     password = request.form.get("password")
     confirmpassword = request.form.get("confirm-password")
-    exclude = request.form.get("exclude")
-    exclude_list = exclude.split(",")
-    print(f'exclude: {exclude}')
-    print(f'exclude list: {exclude_list}')
+    #exclude = request.form.get("exclude")
+    exclude_ingredients_list = []
+    if request.form.get('Milk') is not None:
+        exclude_ingredients_list.append(request.form.get('Milk'))
+    if request.form.get('Egg') is not None:
+        exclude_ingredients_list.append(request.form.get('Egg'))
+    if request.form.get('Peanut') is not None:
+        exclude_ingredients_list.append(request.form.get('Peanut'))
+    if request.form.get('Walnut') is not None:
+        exclude_ingredients_list.append(request.form.get('Walnut'))
+    if request.form.get('Cashew') is not None:
+        exclude_ingredients_list.append(request.form.get('Cashew'))
+    if request.form.get('Shellfish') is not None:
+        exclude_ingredients_list.append(request.form.get('Shellfish'))
+    if request.form.get('Wheat') is not None:
+        exclude_ingredients_list.append(request.form.get('Wheat'))
+    if request.form.get('Soy') is not None:
+        exclude_ingredients_list.append(request.form.get('Soy'))
+    if request.form.get('Sesame') is not None:
+        exclude_ingredients_list.append(request.form.get('Sesame'))
+    print(f'exclude list: {exclude_ingredients_list}')
     user = crud.get_user_by_email(email)
     
     if user:
@@ -68,10 +127,10 @@ def register_user():
     else:
         if password == confirmpassword:
             crud.create_user(fname, lname, email, password)
-            if exclude:
+            if exclude_ingredients_list:
                 user_id = crud.get_user_id_by_email(email)
                 if user_id:
-                    crud.save_ingredient_to_exclude(user_id, exclude_list)
+                    crud.save_ingredient_to_exclude(user_id, exclude_ingredients_list)
             flash("Account created! Please log in.")
         else:
             flash("Password and confirm password are not same, please try again!")
