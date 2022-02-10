@@ -106,7 +106,7 @@ function getExcludedIngredients() {
 }
 
 function closeButton(ele) {
-    ele.remove()
+    document.getElementById(ele).remove()
 }
 
 function sendEmail() {
@@ -126,7 +126,6 @@ function openPrintPopup() {
  }
 
 function saveRecipe(id,recipe) {
-    console.log("inside save")
     fetch(`recipe/${id}/${recipe}?save=True`,{
         headers: {
             'Content-Type': 'application/json',
@@ -140,6 +139,11 @@ function saveRecipe(id,recipe) {
             else {
                 document.getElementById(`save-${id}`).style.display = "none"
                 document.getElementById(`remove-${id}`).style.display = "block"
+                document.querySelector(`#toast-alert-${id}`).insertAdjacentHTML('afterbegin',
+                `<div class="exclude-toast" id="id-${id}">
+                <p id="exclude-value" class="m-10">Saved to Favorites</p>
+                <button type="button" class="btn-close toast-close-icon" aria-label="Close" onClick=closeButton("id-${id}")></button>
+                </div>`)
             }
         })
 }
@@ -154,5 +158,10 @@ function removeRecipe(id,recipe) {
         .then(response => {
             document.getElementById(`save-${id}`).style.display = "block"
             document.getElementById(`remove-${id}`).style.display = "none"
+            document.querySelector(`#toast-alert-${id}`).insertAdjacentHTML('afterbegin',
+                `<div class="exclude-toast" id="id-${id}">
+                <p id="exclude-value">Removed</p>
+                <button type="button" class="btn-close" aria-label="Close" onClick=closeButton("id-${id}")></button>
+                </div>`)
         })
 }

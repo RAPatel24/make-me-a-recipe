@@ -2,123 +2,174 @@
 {% block title %} 
     Make me a recipe
 {% endblock %}
-
 {% block content %}
-<div class="container">
-    <div class="row">
-        <div class="col-12">
-                {% for item in recipe %}
-                    <p id="recipe-id" hidden>{{ item.recipe_id }}</p>
-                    <div class="p-10">
-                        <h4 class="color-brown m-0" id="recipe-title">{{ item.title }}</h4>
-                        <span id="review-count">
-                            <a href="#test-reviews" id="review-count">reviews</a>
+    <div class="container">
+        {% for item in recipe %}
+        <div class="row recipe-section-1-wrapper">
+            <p id="recipe-id" hidden>{{ item.recipe_id }}</p>
+            <div class="p-10">
+                <h4 class="color-brown m-0" id="recipe-title">{{ item.title }}</h4>
+                <span id="review-count">
+                    <a href="#test-reviews" id="review-count" style="color: #FF6B35;">reviews</a>
+                </span>
+            </div>
+            <div class="col-6">
+                <div>
+                    <img src="{{ item.imageUrl }}" class="recipe-image">
+                </div>
+            </div>
+            <div class="col-6">
+                <div class="recipe-stat-wrapper">
+                    <div class="recipe-stats">
+                        <span class="time-stats" aria-hidden="true">
+                            <!--<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="32px" height="32px" role="img" viewBox="0 0 24 24" aria-hidden="true"><g fill="none" fill-rule="evenodd"><path fill="#e7ab46" d="m 11.938,19.758 a 7.817,7.817 0 0 1 -7.815,-7.82 7.818,7.818 0 1 1 15.634,0 7.819,7.819 0 0 1 -7.818,7.82 M 11.939,2 c 5.486,0 9.937,4.447 9.937,9.938 0,5.488 -4.45,9.938 -9.937,9.938 C 6.454,21.876 2,17.426 2,11.938 2,6.448 6.454,2 11.939,2 Z m -0.554,5.624 a 0.554,0.554 0 0 0 1.108,0 V 5.64 a 0.554,0.554 0 0 0 -1.108,0 z m 0,10.688 a 0.555,0.555 0 0 0 1.108,0 v -1.984 a 0.551,0.551 0 0 0 -0.551,-0.55 0.553,0.553 0 0 0 -0.557,0.55 z m 7.181,-6.16 c 0.31,0 0.55,-0.247 0.55,-0.55 a 0.547,0.547 0 0 0 -0.55,-0.554 h -1.984 a 0.556,0.556 0 0 0 -0.557,0.555 c 0,0.302 0.251,0.55 0.557,0.55 h 1.984 z m -11.14,0 a 0.552,0.552 0 1 0 0,-1.104 H 5.442 a 0.555,0.555 0 0 0 -0.556,0.555 c 0,0.302 0.25,0.55 0.556,0.55 h 1.982 z m 0.88,-3.5 c 0.082,0.08 0.188,0.12 0.294,0.12 a 0.41,0.41 0 0 0 0.291,-0.12 0.418,0.418 0 0 0 0,-0.588 L 7.899,7.073 a 0.415,0.415 0 0 0 -0.586,0 0.421,0.421 0 0 0 0,0.587 z m 8.13,8.065 c 0.083,0.08 0.19,0.12 0.294,0.12 a 0.413,0.413 0 0 0 0.29,-0.706 l -0.992,-0.993 a 0.418,0.418 0 0 0 -0.585,0 0.42,0.42 0 0 0 0,0.585 z M 15.966,8.652 16.957,7.66 A 0.41471948,0.41471948 0 1 0 16.372,7.072 l -0.989,0.992 a 0.412,0.412 0 0 0 0,0.588 0.412,0.412 0 0 0 0.582,0 z m -8.131,8.066 0.99,-0.994 A 0.41295097,0.41295097 0 1 0 8.242,15.139 L 7.25,16.132 a 0.426,0.426 0 0 0 0,0.586 c 0.08,0.08 0.186,0.12 0.292,0.12 0.106,0 0.215,-0.04 0.293,-0.12 z m 3.628,-2.737 c 0.916,-1.107 4.562,-5.576 2.932,-4.566 -1.859,1.152 -4.516,3.113 -4.516,3.113 a 1.097,1.097 0 0 0 -0.414,0.855 1.085,1.085 0 0 0 1.788,0.83 l 0.004,0.01 c 0,0 0.02,-0.02 0.052,-0.057 0.058,-0.057 0.11,-0.117 0.154,-0.185 z"></path></g></svg> -->
+                            <i class='far fa-clock color-orange' style='font-size:20px;'></i>
                         </span>
+                        <p class="pl-10">Ready in {{ item.readyInMinutes}} mins</p>
                     </div>
-                    <div class="container">
-                        <div class="row">
-                            <div class="col-7">
-                                <img src="{{ item.imageUrl }}" style="width: auto; height: auto;">
-                                <p>Servings {{ item.servings }}</p>
-                                <p> Ready in {{ item.readyInMinutes}} mins</p>
-                            </div>
-                            <div class="col-5">
-                                <h5 class="color-brown">Ingredients</h4>
-                                <ul class="color-cadetblue">
-                                    {% for ingredient in item.ingredients %}
-                                        <li>{{ ingredient }}</li>
-                                    {% endfor %}
-                                </ul>
-                                <div>
-                                    <p>Nutrition Facts</p>
-                                    <ul>
-                                        {% for nutrient, amount in item.nutrition.items() %}
-                                            <li> {{ nutrient }} : {{ amount}}</li>
-                                        {% endfor%}
-                                    </ul>   
-                                   
-                                </div>
-                                <div class="d-flex">
-                                    {% if not isRecipeSaved %}
-                                        <a href="?save=True" class="d-grid text-decoration-none icon-style">
-                                            <i class='far fa-heart' style='font-size:24px'></i>
-                                            <span>save</span>
-                                        </a>
-                                    {% else %}
-                                        <a href="?remove=True" class="d-grid text-decoration-none icon-style">
-                                            <i class='fa fa-heart' style='font-size:24px'></i>
-                                            <span>Remove</span>
-                                        </a>
-                                    {% endif %}
-                                        <a href="javascript:void(0);" onclick="openPrintPopup()" class="d-grid text-decoration-none icon-style">
-                                            <i class='fas fa-print' style='font-size:24px'></i>
-                                            <span>print</span>
-                                        </a>
-                                        <a data-bs-toggle="modal" data-bs-target="#emailModal" class="d-grid text-decoration-none icon-style">
-                                            <i class='fas fa-envelope-square' style='font-size:24px'></i>
-                                            <span>Email</span>
-                                        </a>
-                                </div>
-                            </div>
-                        </div>
-                        </div>
-               
-                        <div class="col-12">
-                            <h5 class="color-brown p-10">Instructions</h4>
-                            <ol class="color-cadetblue">
-                            {% for instruction in item.instructions %}
-                                    <li>{{ instruction }}</li>
-                            {% endfor %}
-                            </ol>
-                        </div>
-                        <div>
-                            <p>Source url : {{ item.spoonacularSourceUrl }} </p>
-                        </div>
-                {% endfor %}
+                    <div class="recipe-stats border-left">
+                        <span class="time-stats pl-20" aria-hidden="true">
+                            <!--<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="32px" height="32px" role="img" viewBox="0 0 24 24" aria-hidden="true"><g fill="none" fill-rule="evenodd"><path fill="#e7ab46" d="m 11.938,19.758 a 7.817,7.817 0 0 1 -7.815,-7.82 7.818,7.818 0 1 1 15.634,0 7.819,7.819 0 0 1 -7.818,7.82 M 11.939,2 c 5.486,0 9.937,4.447 9.937,9.938 0,5.488 -4.45,9.938 -9.937,9.938 C 6.454,21.876 2,17.426 2,11.938 2,6.448 6.454,2 11.939,2 Z m -0.554,5.624 a 0.554,0.554 0 0 0 1.108,0 V 5.64 a 0.554,0.554 0 0 0 -1.108,0 z m 0,10.688 a 0.555,0.555 0 0 0 1.108,0 v -1.984 a 0.551,0.551 0 0 0 -0.551,-0.55 0.553,0.553 0 0 0 -0.557,0.55 z m 7.181,-6.16 c 0.31,0 0.55,-0.247 0.55,-0.55 a 0.547,0.547 0 0 0 -0.55,-0.554 h -1.984 a 0.556,0.556 0 0 0 -0.557,0.555 c 0,0.302 0.251,0.55 0.557,0.55 h 1.984 z m -11.14,0 a 0.552,0.552 0 1 0 0,-1.104 H 5.442 a 0.555,0.555 0 0 0 -0.556,0.555 c 0,0.302 0.25,0.55 0.556,0.55 h 1.982 z m 0.88,-3.5 c 0.082,0.08 0.188,0.12 0.294,0.12 a 0.41,0.41 0 0 0 0.291,-0.12 0.418,0.418 0 0 0 0,-0.588 L 7.899,7.073 a 0.415,0.415 0 0 0 -0.586,0 0.421,0.421 0 0 0 0,0.587 z m 8.13,8.065 c 0.083,0.08 0.19,0.12 0.294,0.12 a 0.413,0.413 0 0 0 0.29,-0.706 l -0.992,-0.993 a 0.418,0.418 0 0 0 -0.585,0 0.42,0.42 0 0 0 0,0.585 z M 15.966,8.652 16.957,7.66 A 0.41471948,0.41471948 0 1 0 16.372,7.072 l -0.989,0.992 a 0.412,0.412 0 0 0 0,0.588 0.412,0.412 0 0 0 0.582,0 z m -8.131,8.066 0.99,-0.994 A 0.41295097,0.41295097 0 1 0 8.242,15.139 L 7.25,16.132 a 0.426,0.426 0 0 0 0,0.586 c 0.08,0.08 0.186,0.12 0.292,0.12 0.106,0 0.215,-0.04 0.293,-0.12 z m 3.628,-2.737 c 0.916,-1.107 4.562,-5.576 2.932,-4.566 -1.859,1.152 -4.516,3.113 -4.516,3.113 a 1.097,1.097 0 0 0 -0.414,0.855 1.085,1.085 0 0 0 1.788,0.83 l 0.004,0.01 c 0,0 0.02,-0.02 0.052,-0.057 0.058,-0.057 0.11,-0.117 0.154,-0.185 z"></path></g></svg> -->
+                            <i class='fas fa-utensils color-orange' style='font-size:20px;'></i>
+                        </span>
+                        <p class="pl-10">Servings {{ item.servings }}</p>  
+                    </div>
+                </div>
+                <div>
+                    <p><span class="pr-10"><i class='fas fa-leaf color-orange' style='font-size:20px;'></i></span> Nutrition Facts</p>
+                    <ul class="nutrition-list">
+                    {% for nutrient, amount in item.nutrition.items() %}
+                        <li class="nutrition-list-item text-center"> <span>{{ nutrient }}</span> 
+                            <span class="color-cadetblue">{{ amount }} </span>
+                        </li>
+                    {% endfor%}
+                    </ul>   
+               </div>
+               <div>
+                <div class="d-flex">
+                    {% if not isRecipeSaved %}
+                        <a href="?save=True" class="d-grid text-decoration-none icon-style save-icon">
+                            <i class='far fa-heart color-orange'></i>
+                            <span class="color-gray">save</span>
+                        </a>
+                    {% else %}
+                        <a href="?remove=True" class="d-grid text-decoration-none icon-style save-icon">
+                            <i class='fa fa-heart color-orange'></i>
+                            <span class="color-gray">Remove</span>
+                        </a>
+                    {% endif %}
+                        <a href="javascript:void(0);" onclick="openPrintPopup()" class="d-grid text-decoration-none icon-style print-icon">
+                            <i class='fas fa-print color-orange'></i>
+                            <span class="color-gray">print</span>
+                        </a>
+                        {% if session.get('user_id') %}
+                        <a href="javascript:void(0);"data-bs-toggle="modal" data-bs-target="#emailModal" class="d-grid text-decoration-none icon-style email-icon">
+                            <i class='fas fa-envelope-square color-orange'></i>
+                            <span class="color-gray">Email</span>
+                        </a>
+                        {% else %}
+                        <a href="/signup" class="d-grid text-decoration-none icon-style email-icon">
+                            <i class='fas fa-envelope-square color-orange'></i>
+                            <span class="color-gray">Email</span>
+                        </a>
+                        {% endif %}
+                        
+                    </div>
+            </div>
+            </div>
         </div>
-    </div>
-    <div class="divider"></div>
-    <div class="review-form">
-        <p>Add a Review</p>
-        <form id="add-review-form" class="d-flex">
-            <div class="p-10">
-                <label for="rating">Rating:</label>
-                <select class="rating-select" name="rating">
-                    <option>1</option>
-                    <option>2</option>
-                    <option>3</option>
-                    <option>4</option>
-                    <option>5</option>
-                  </select>
+        <div class="row">
+            <div class="col-12">
+                <div>
+                    <h5 class="color-brown">Ingredients</h4>
+                        <ul class="color-gray">
+                            {% for ingredient in item.ingredients %}
+                                <li class="m-10">{{ ingredient }}</li>
+                            {% endfor %}
+                        </ul>
+                </div>
+                <div>
+                    <h5 class="color-brown p-10">Instructions</h4>
+                        <ol class="color-gray">
+                        {% for instruction in item.instructions %}
+                            <li class="m-10">{{ instruction }}</li>
+                        {% endfor %}
+                        </ol>
+                        <div>
+                            <a href="{{ item.spoonacularSourceUrl }}" class="color-cadetblue"><p>Find detailed recipe here. </p></a>
+                        </div>
+                </div>
             </div>
-            <div class="p-10 d-flex">
-                <label for="review" class="form-label">Review:</label>
-                <input type="text" class="form-control w-500" id="review" placeholder="enter review" name="review" required>
+        </div>
+        {% endfor %}
+        <div class="review-divider">
+            <span><i class='far fa-circle' style='color: orange;font-size: 18px'></i></span>
+            <span><i class='fas fa-star' style='font-size: 18px;color: darkcyan;'></i></span>
+            <span><i class='far fa-square' style='font-size: 18px;color: red;'></i></span>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                {% if session.get('user_id') %}
+                <button data-bs-toggle="modal" data-bs-target="#reviewModal" class="color-orange add-review-button">Add a Review</button>
+                {% else %} 
+                <div class="add-review-button">
+                    <a href="/signup" style="text-decoration: none; color: white;">Add a Review</a>
+                </div>
+                {% endif %}
+                <div id="test-reviews"></div>
             </div>
-            <div class="p-10">
-                <button type="submit" class="h-30" id="add-review">Add Review</button>
-            </div>
-        </form>
-    </div>
+        </div>
     <div class="modal fade" id="emailModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
+        <div class="modal-dialog t-200" role="document">
           <div class="modal-content">
             <div class="modal-header">
-              <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <h5 class="modal-title" id="exampleModalLabel">Send an Email</h5>
+              <button type="button" class="close modal-close-button" data-bs-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
               </button>
             </div>
             <div class="modal-body">
               <form action="">
-                  <input type="email" value="{{session.get('user_email')}}" id="send-email-value"/>
-                  <input type="submit" value="send email" onclick="sendEmail()"/>
+                  <input type="email" value="{{session.get('user_email')}}" id="send-email-value" style="margin:10px;width:250px;height:45px;"/>
+                  <input type="submit" value="Send" class="send-email-button" onclick="sendEmail()"/>
               </form>
             </div>
           </div>
         </div>
-      </div>
-    <div id="test-reviews"></div>
+    </div>
+    <div class="modal fade" id="reviewModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog t-200" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">Add a Review</h5>
+              <button type="button" class="close modal-close-button" data-bs-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+                <form id="add-review-form">
+                    <div class="p-10">
+                        <label for="rating">Rating:</label>
+                        <select class="rating-select" name="rating">
+                            <option>1</option>
+                            <option>2</option>
+                            <option>3</option>
+                            <option>4</option>
+                            <option>5</option>
+                          </select>
+                    </div>
+                    <div class="p-10">
+                        <label for="review" class="form-label">Review:</label>
+                        <input type="text" class="form-control w-350" id="review" placeholder="enter review" name="review" required>
+                    </div>
+                    <div class="p-10">
+                        <button type="submit" class="h-30 add-review-form-button" id="add-review">Add Review</button>
+                    </div>
+                </form>
+            </div>
+          </div>
+        </div>
+    </div>
 </div>
 {% endblock %}
 {% block js %}

@@ -7,15 +7,15 @@
     },
     {
         "id": 2,
-        "title": "Brunch Recipes",
-        "image": "/static/images/brunch.png",
-        "category": "brunch"
-    },
-    {
-        "id": 3,
         "title": "10 Fancy Soups To Make",
         "image": "/static/images/soup.png",
         "category": "soup"
+    },
+    {
+        "id": 3,
+        "title": "Brunch Recipes",
+        "image": "/static/images/brunch.png",
+        "category": "brunch"
     },
     {
         "id": 4,

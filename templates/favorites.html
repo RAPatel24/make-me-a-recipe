@@ -4,25 +4,34 @@
 {% endblock %}
 {% block content %}
 <div>
-    <h3>Favorites</h3>
+    <h3 class="text-center m-30 color-brown">Favorites</h3>
     <div class="container">
         <div class="row">
             {% if not saved_recipes %}
                 <p>Don't have anything saved yet!</p>
             {% else %}
             {% for recipe in saved_recipes %}
-                <div class="col-4 text-center card-item">
-                    <a href="javascript:void(0);" id="save-{{recipe.id}}" style="display:none" onclick="saveRecipe('{{recipe.id}}','{{recipe.title}}')">
-                        <i class='far fa-heart' style='font-size:24px' id="save-heart-icon"></i>
-                    </a>
-                    <a href="javascript:void(0);" id="remove-{{recipe.id}}" onclick="removeRecipe('{{recipe.id}}','{{recipe.title}}')">
-                        <i class='fa fa-heart' style='font-size:24px' id="save-heart-icon"></i>
-                    </a>
-                    <a href="recipe/{{ recipe.id }}/{{ recipe.title }}">
-                        <p>{{ recipe['title'] }}</p>
-                        <img src="{{ recipe['image'] }}" style="width: 250px;">
-                    </a>
-                </div>  
+                <div class="col-lg-4 col-md-6 col-sm-12 text-center">
+                    <div class="p-25 position-relative card-border">
+                        <div class="d-flex">
+                            <div id="toast-alert-{{recipe.id}}"></div>
+                            <div class="heart-icon">
+                                <a href="javascript:void(0);" id="save-{{recipe.id}}" style="display:none" onclick="saveRecipe('{{recipe.id}}','{{recipe.title}}')">
+                                    <i class='far fa-heart color-orange' id="save-heart-icon"></i>
+                                </a>
+                                <a href="javascript:void(0);" id="remove-{{recipe.id}}" onclick="removeRecipe('{{recipe.id}}','{{recipe.title}}')">
+                                    <i class='fa fa-heart color-orange' id="save-heart-icon"></i>
+                                </a>
+                            </div>
+                        </div>
+                        <div>
+                            <a href="recipe/{{ recipe.id }}/{{ recipe.title }}">
+                                <p class="mt-10">{{ recipe['title'] }}</p>
+                                <img src="{{ recipe['image'] }}" style="width: 250px;">
+                            </a>
+                        </div>
+                    </div>
+                </div>
             {% endfor %}
             {% endif %}
         </div>

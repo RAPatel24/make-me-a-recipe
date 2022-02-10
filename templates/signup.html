@@ -4,55 +4,77 @@
 {% endblock %}
 
 {% block content %}
-<div class="container">
-    <div class="row">
-        <div class="col-6">
-            <form action="/signup" method="post">
-                <div style="padding: 2px;" class="mt-10">
-                    First Name: <input type="text" name="fname" id="fname" required>
-                </div>
-                <div style="padding: 4px;" class="mt-10">
-                    Last Name: <input type="text" name="lname" id="lname" required>
-                </div>
-                <div style="padding: 2px;" class="mt-10">
-                    Email: <input type="email" name="email" id="email" required> 
-                </div>
-                <div style="padding: 2px;" class="mt-10">
-                    Password: <input type="password" name="password" id="password" required>
-                </div>
-                <div style="padding: 2px;" class="mt-10">
-                    Confirm Password: <input type="password" name="confirm-password" required>
-                </div>
-               <!-- <div class="mt-10">
-                    <label for="exclude">Any food allergies</label><br>
-                    <input type="text" id="exclude" placeholder="enter food intolerances separated by comma for ex, milk, peanut" name="exclude">
-                </div> -->
-                <div class="exclude-ingredients" style="display: flex;margin: 50px;">
-                    <p>Exclude ingredients</p>
-                    <input type="checkbox" id="Egg" name="Egg" value="egg" class="m-10">
-                    <label for="Egg"> Egg </label><br>
-                    <input type="checkbox" id="Peanut" name="Peanut" value="peanut" class="m-10">
-                    <label for="Peanut"> Peanut</label><br>
-                    <input type="checkbox" id="Soy" name="Soy" value="soy" class="m-10">
-                    <label for="Soy"> Soy</label><br><br>
-                    <input type="checkbox" id="Sesame" name="Sesame" value="sesame" class="m-10">
-                    <label for="Sesame">Sesame</label><br>
-                    <input type="checkbox" id="Shellfish" name="Shellfish" value="shellfish" class="m-10">
-                    <label for="Shellfish">Shellfish</label><br>
-                    <input type="checkbox" id="Wheat" name="Wheat" value="wheat" class="m-10">
-                    <label for="Wheat">Wheat</label><br><br>
-                    <input type="checkbox" id="Milk" name="Milk" value="milk" class="m-10">
-                    <label for="Milk">Milk</label><br><br>
-                    <input type="checkbox" id="Walnut" name="Walnut" value="walnut" class="m-10">
-                    <label for="Walnut">Walnut</label><br><br>
-                    <input type="checkbox" id="Cashew" name="Cashew" value="cashew" class="m-10">
-                    <label for="Cashew">Cashew</label><br><br>
-                </div>
-                <input type="submit" value="Signup" class="mt-10">
-            </form>
-            <div class="mt-10"><span>Already a member?</span><a href="/login">Log In</a></div>
+        <div class="m-30"></div>
+        <div class="mb-20">
+            <div class="signup-form-background background-blue">
+                <form action="/signup" method="post" class="signup-form-div">
+                    <h3 class="text-center">Sign up to Create an Account</h3>
+                    <div class="mt-10">
+                        <label for="fname" class="form-label mt-10">First Name</label>
+                        <input type="text" class="form-control" name="fname" id="fname" placeholder="enter your first name" required>
+                    </div>
+                    <div class="mt-10">
+                        <label for="lname" class="form-label mt-10">Last Name</label>
+                        <input type="text" class="form-control" name="lname" id="lname" placeholder="enter your last name" required>
+                    </div>
+                    <div class="mt-10">
+                        <label for="email" class="form-label mt-10">Email</label>
+                        <input type="email" class="form-control" name="email" id="email" placeholder="enter your email address" required> 
+                    </div>
+                    <div class="mt-10">
+                        <label for="password" class="form-label mt-10">Confirm Password</label>
+                        <input type="password" name="password" id="password" class="form-control" placeholder="enter password"required>
+                    </div>
+                    <div class="mt-10">
+                        <label for="confirm-password" class="form-label mt-10">Confirm Password</label>
+                        <input type="password" class="form-control" name="confirm-password" placeholder="confirm password"required>
+                    </div>
+                    <div>
+                        <p class="mt-10">Any allergies that you would like to exclude? </p>
+                        <div class="exclude-ingredients">
+                            <div>
+                                <input type="checkbox" id="Egg" name="Egg" value="egg" class="m-10">
+                                <label for="Egg"> Egg </label>
+                            </div>
+                            <div>
+                                <input type="checkbox" id="Peanut" name="Peanut" value="peanut" class="m-10">
+                                <label for="Peanut"> Peanut</label>
+                            </div>
+                            <div>
+                                <input type="checkbox" id="Soy" name="Soy" value="soy" class="m-10">
+                                <label for="Soy"> Soy</label>
+                            </div>
+                            <div>
+                                <input type="checkbox" id="Sesame" name="Sesame" value="sesame" class="m-10">
+                                <label for="Sesame">Sesame</label>
+                            </div>
+                            <div>
+                                <input type="checkbox" id="Shellfish" name="Shellfish" value="shellfish" class="m-10">
+                                <label for="Shellfish">Shellfish</label>
+                            </div>
+                            <div>
+                                <input type="checkbox" id="Wheat" name="Wheat" value="wheat" class="m-10">
+                                <label for="Wheat">Wheat</label>
+                            </div>
+                            <div>
+                                <input type="checkbox" id="Milk" name="Milk" value="milk" class="m-10">
+                                <label for="Milk">Milk</label>
+                            </div>
+                            <div>
+                                <input type="checkbox" id="Walnut" name="Walnut" value="walnut" class="m-10">
+                                <label for="Walnut">Walnut</label>
+                            </div>
+                            <div>
+                                <input type="checkbox" id="Cashew" name="Cashew" value="cashew" class="m-10">
+                                <label for="Cashew">Cashew</label>
+                            </div>
+                            
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary signup-button">Sign Up</button>
+                    <!--<input type="submit" value="Signup" class="mt-10">-->
+                    <p class="mt-10">Already a member? <a href="/login" class="color-orange">Sign In</a></p>
+                </form>
+            </div>
         </div>
-        </div>
-    </div>
-</div>
 {% endblock %}

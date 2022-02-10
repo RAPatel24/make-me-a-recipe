@@ -19,11 +19,11 @@ function Reviews() {
   },[])
 
   return (
-    <div className="container">
+    <div className="container pl-0 mt-20">
       <div className="row">
-      <h5>Reviews</h5>
-      {reviews.map(rev => <div key="rev" className="card m-10">
-                            <p>{rev.user_name}</p>
+      <h5 className="color-brown">Reviews</h5>
+      {reviews.map(rev => <div key="rev" className="card m-20 font-18 p-10 m-10">
+                            <p className="underline-style">{rev.user_name}</p>
                             <p>Rating: {rev.rating}/5</p>
                             <p>Review: {rev.review}</p>
                           </div>)}

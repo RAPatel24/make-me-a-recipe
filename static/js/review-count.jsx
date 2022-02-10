@@ -19,7 +19,7 @@ function ReviewCount() {
   },[])
 
   return (
-    <a href="#test-reviews"> {reviewcount} reviews</a>
+    <a href="#test-reviews" className="color-cadetblue"> {reviewcount} reviews</a>
   );
 }
 
