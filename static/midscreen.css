@@ -1,0 +1,100 @@
+.exclude-ingredients{
+    display: inline;
+}
+.signin-form-div {
+    margin: 50px;
+    background: white;
+    padding: 30px;
+    width: 50%;
+}
+.home-recipe-layout{
+    display: flex;
+    grid-template-columns: auto auto; 
+    justify-content: center;
+    align-items: center;
+}
+.grid-2-image{
+    width: 200px;
+}
+.description.w-500{
+    display: block;
+    width: 200px !important;
+}
+.grid-item-2.h-510{
+    height: 200px;
+}
+.text-align{
+    text-align: center !important;
+}
+#search-by-cuisine-and-type{
+    display: flex;
+}
+#search-by-recipe{
+    display: flex;
+}
+.mt {
+    margin-top: 0px;
+}
+.mb{
+    margin-bottom: 0px;
+}
+#grid-item{
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-top: 20px;
+    padding-bottom: 20px;
+}
+.grid-item-1.text-align{
+    text-align: left !important;
+}
+.grid-item-2.text-align{
+    text-align: left !important;
+}
+.grid-item-3.text-align{
+    text-align: left !important;
+}
+.search-recipe-form {
+    text-align: center;
+    color: darkslategray;
+    padding-top: 25px;
+    background: rgba(255,255,255);
+    padding-bottom: 25px;
+    font-size: 15px;
+    padding: 0px;
+}
+.card-wrapper{
+    display: grid;
+    grid-template-columns: auto auto;
+}
+.search-string{
+    margin: 40px;
+    text-align: center;
+}
+.recipe-image {
+    min-width: 300px;
+    max-width: 250px;
+    min-height: 250px;
+    max-height: 250px;
+}
+.recipe-stat-wrapper{
+    display: flex;
+}
+.recipe-section-1-wrapper {
+    display: flex;
+}
+.recipe-stats {
+    min-width: 180px;
+    display: flex;
+    margin-bottom: 20px;
+    position: relative;
+    height: 30px;
+    height: 30px;
+    /* margin-right: 20px; */
+    display: inline-flex;
+}
+.nutrition-list {
+    padding-left: 0px;
+    list-style: none;
+    display: grid;
+    grid-template-columns: auto auto auto auto;
+}

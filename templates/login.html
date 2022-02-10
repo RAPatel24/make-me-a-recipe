@@ -1,23 +1,23 @@
 {% extends 'base.html' %}
 {% block content %}
-<div class="container">
-    <div class="row">
-        <div class="col-12 text-center">
-            <h2>Login</h2>
-            <form action="/login" method="post">
-                <div style="text-align: left;">
-                    <div class="col-md-4">
-                        <label for="email" class="form-label">Email</label>
-                        <input type="email" class="form-control" name="email" placeholder="enter email"> 
-                    </div>
-                    <div class="col-md-4">
-                        <label for="password" class="form-label">Password</label>
-                        <input type="password" class="form-control" name="password" placeholder="enter password">
-                    </div>
-                    <button type="submit" class="btn btn-primary">Login</button>
+<div class="m-30"></div>
+<div class="mb-20">
+    <div class="background-blue signup-form-background">
+        <form action="/login" method="post" class="signin-form-div">
+            <h3 class="text-center">Sign in to your account</h3>
+            <div style="text-align: left;">
+                <div>
+                    <label for="email" class="form-label mt-10">Email</label>
+                    <input type="email" class="form-control" name="email" placeholder="enter email"> 
                 </div>
-            </form>
-        </div>
+                <div>
+                    <label for="password" class="form-label mt-10">Password</label>
+                    <input type="password" class="form-control" name="password" placeholder="enter password">
+                </div>
+                <button type="submit" class="btn btn-primary signup-button">Sign In</button>
+            </div>
+            <p class="mt-10">Don't have a account? <a href="/signup" class="color-orange">Signup</a></p>
+        </form>
     </div>
 </div>
 {% endblock %}

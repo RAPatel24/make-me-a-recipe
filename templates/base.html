@@ -2,7 +2,8 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -11,24 +12,47 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/6.26.0/babel.js"></script>
     <script src="https://unpkg.com/react@16/umd/react.development.js" crossorigin></script>
     <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js" crossorigin></script>
+    <script src='https://kit.fontawesome.com/a076d05399.js' crossorigin='anonymous'></script>
+    <script src="https://unpkg.com/react/umd/react.production.min.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom/umd/react-dom.production.min.js" crossorigin></script>
+    <script src="https://unpkg.com/react-bootstrap@next/dist/react-bootstrap.min.js" crossorigin></script>
+    <link rel="stylesheet" media="screen and (max-width: 600px)" href="/static/smallscreen.css">
+    <link rel="stylesheet" media="screen and (min-width: 600px)and (max-width: 900px)" href="/static/midscreen.css">
+    <script>var Alert = ReactBootstrap.Alert;</script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
     <title>
       {% block title %}Welcome{% endblock %}
     </title>
 
     {% block head %}{% endblock %}
-    {% block js %}
-    {% endblock %}
+    
   </head>
   <body>
-    <div class="pr-15 mr-15 mt-10 text-align-right">
-      {% if session.get('user_id') and session.get('user_email') %}
-      <a href="/logout">Logout </a>
-      {% else %}
-        <a href="/login">Login | </a>
-      <a href="/signup">Signup</a>
-      {% endif %}
+    
+    <div class="">
+      <span class="text-align-right float-right nav-links">
+        {% if session.get('user_id') and session.get('user_email') %}
+        <div class="border-right" style="display: inline-flex;width: 80px">
+          <a href="/favorites" class="color-gray">Favorites</a>
+        </div>
+        <div style="padding-left: 10px; display: inline-flex;">
+          <a href="/logout" class="color-gray">Logout </a>
+        </div>
+       
+        {% else %}
+        <div class="border-right" style="display: inline-flex;width: 60px">
+          <a href="/login" class="color-gray">Login</a>
+        </div>
+        <div style="padding-left: 10px; display: inline-flex;">
+          <a href="/signup" class="color-gray">Signup</a>
+        </div>
+        {% endif %}
+      </span>
+      
     </div>
-    <div class="text-center">
+    <div class="text-center nav-section">
       <a href="/">
         <img src="/static/images/FullLogo_Transparent_NoBuffer.png" class="logo-size">
       </a>
@@ -43,13 +67,16 @@
     {% block content %}{% endblock %}
 
     {% block after_body %}{% endblock %}
-    <div class="footer text-center">
+    
+    <div class="footer text-center d-none">
       <p>
         <span><a href="/">About Us | </a></span>
         <span><a href="/">Support | </a></span>
         <span><a href="/">Contact Us </a></span>
       </p>
     </div>
+    {% block js %}
+    {% endblock %}
     <script src="/static/script.js"></script>
     <!-- Bootstrap JavaScript Bundle with Popper (a Bootstrap dependency for popovers) -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4" crossorigin="anonymous"></script>
